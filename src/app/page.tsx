@@ -1,321 +1,192 @@
 'use client';
 
-import React from 'react';
 import { motion } from 'framer-motion';
+import Link from 'next/link';
+import { useRef } from 'react';
 
-export default function InsideOutLanding() {
-    const programs = [
-        {
-            id: 1,
-            title: '내면 탐색 워크숍',
-            subtitle: '감정, 가치, 강점 발견하기',
-            description:
-                '소그룹 실습과 저널링을 통해 자신의 핵심 감정과 가치를 확인하고, 실생활에 적용 가능한 성장 루틴을 설계합니다.',
-            duration: '4주',
-        },
-        {
-            id: 2,
-            title: '자기대화 코칭',
-            subtitle: '생산적인 자기대화 습관 만들기',
-            description: '부정적 내적 대화를 다루는 실전 전략과 매주 맞춤 피드백을 제공합니다. 1:1 코칭 옵션 포함.',
-            duration: '6주',
-        },
-        {
-            id: 3,
-            title: '관계성과 회복력 프로그램',
-            subtitle: '관계 역량과 회복탄력성 키우기',
-            description: '갈등 관리, 경계 설정, 회복력 훈련을 통해 관계에서 더 건강하게 서는 법을 배웁니다.',
-            duration: '5주',
-        },
+export default function HomePage() {
+    const program = {
+        name: '마인드 포인트(가제)',
+        target: '20대~30대 초반 청년층',
+        duration: '3주 (주 2회, 총 6회)',
+        notionDetail: 'https://www.notion.so/280791d4d6388003b8b2f863a25df81e?pvs=21',
+    };
+
+    const recommendedPrograms = [
+        { id: 1, title: '내면 탐색 워크숍', subtitle: '감정, 가치, 강점 발견하기', image: '/program1.jpg', link: '#' },
+        { id: 2, title: '고전 읽기 클럽', subtitle: '철학/문학 심층 토론', image: '/program2.jpg', link: '#' },
+        { id: 3, title: '리더십 성장 모임', subtitle: '커리어와 인간관계 개발', image: '/program3.jpg', link: '#' },
+        { id: 4, title: '문화예술 탐험', subtitle: '전시, 공연, 영화 리뷰', image: '/program4.jpg', link: '#' },
+        { id: 5, title: '금융 스터디', subtitle: '투자와 경제 이해', image: '/program5.jpg', link: '#' },
     ];
 
-    const testimonials = [
-        {
-            id: 1,
-            name: '민지 (27)',
-            quote: 'InsideOut을 통해 내가 정말 원하는 걸 처음 알게 됐어요. 강연 + 워크숍 구성도 현실적이라 꾸준히 실천하게 됩니다.',
-        },
-        {
-            id: 2,
-            name: '준호 (31)',
-            quote: '실제 삶에 적용되는 툴을 얻었고, 커뮤니티 덕분에 동기부여도 계속 이어져요.',
-        },
+    const iconGridItems = [
+        { icon: '📣', text: '오픈 임박!', link: '#' },
+        { icon: '⏰', text: '마감 임박!', link: '#' },
+        { icon: '🗓️', text: '2주 안에 시작', link: '#' },
+        { icon: '❤️', text: '크루 추천 클럽', link: '#' },
+        { icon: '🍊', text: '제주에서 모임하기', link: '#' },
+        { icon: '🏛️', text: '인문/사회/철학/과학', link: '#' },
+        { icon: '📺', text: '문화/예술/콘텐츠', link: '#' },
+        { icon: '💼', text: '커리어/리더십', link: '#' },
+        { icon: '💰', text: '금융/경제/투자', link: '#' },
+        { icon: '더보기', iconClass: 'text-orange-400', image: '/arrow-down-circle.png', link: '/detail' },
     ];
+
+    const carouselRef = useRef<HTMLDivElement>(null);
+
+    const scrollLeft = () => {
+        if (carouselRef.current) {
+            carouselRef.current.scrollBy({ left: -300, behavior: 'smooth' });
+        }
+    };
+
+    const scrollRight = () => {
+        if (carouselRef.current) {
+            carouselRef.current.scrollBy({ left: 300, behavior: 'smooth' });
+        }
+    };
 
     return (
         <div className="min-h-screen bg-gray-50 text-gray-900">
-            {/* Nav */}
-            <header className="sticky top-0 z-40 bg-white/80 backdrop-blur-sm shadow-sm">
-                <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-                    <div className="flex items-center justify-between h-16">
-                        <div className="flex items-center gap-3">
-                            <div className="w-10 h-10 flex items-center justify-center rounded-2xl bg-gradient-to-br from-indigo-500 to-pink-500 text-white font-semibold">
-                                IO
-                            </div>
-                            <div className="font-semibold">InsideOut</div>
+            {/* 추천 프로그램 캐러셀 */}
+            <section className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-6 relative">
+                <h2 className="text-2xl font-bold mb-4">🔥 추천 프로그램</h2>
+                <div className="relative">
+                    <button
+                        onClick={scrollLeft}
+                        className="absolute left-0 top-1/2 -translate-y-1/2 z-10 bg-white rounded-full p-2 shadow hover:bg-gray-100"
+                    >
+                        ◀
+                    </button>
+                    <div ref={carouselRef} className="flex space-x-4 overflow-x-auto scrollbar-hide py-2">
+                        {recommendedPrograms.map((prog) => (
+                            <motion.div
+                                key={prog.id}
+                                className="min-w-[250px] bg-white rounded-2xl shadow-md overflow-hidden flex-shrink-0 hover:shadow-lg transition"
+                                whileHover={{ scale: 1.03 }}
+                            >
+                                <Link href={prog.link} className="block">
+                                    <img src={prog.image} alt={prog.title} className="w-full h-40 object-cover" />
+                                    <div className="p-4">
+                                        <h3 className="font-semibold text-lg">{prog.title}</h3>
+                                        <p className="text-sm text-gray-600 mt-1">{prog.subtitle}</p>
+                                    </div>
+                                </Link>
+                            </motion.div>
+                        ))}
+                    </div>
+                    <button
+                        onClick={scrollRight}
+                        className="absolute right-0 top-1/2 -translate-y-1/2 z-10 bg-white rounded-full p-2 shadow hover:bg-gray-100"
+                    >
+                        ▶
+                    </button>
+                </div>
+            </section>
+
+            {/* Hero Section */}
+            <section className="bg-gradient-to-br from-indigo-50 to-white py-20">
+                <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col lg:flex-row items-start gap-12">
+                    <motion.div
+                        initial={{ x: -40, opacity: 0 }}
+                        animate={{ x: 0, opacity: 1 }}
+                        transition={{ duration: 0.6 }}
+                        className="flex-1"
+                    >
+                        <h1 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold leading-tight">
+                            # {program.name} 프로그램
+                        </h1>
+                        <p className="mt-4 text-gray-700 max-w-xl">
+                            <strong>대상:</strong> {program.target} <br />
+                            <strong>기간:</strong> {program.duration} <br />
+                        </p>
+                        <div className="mt-6 flex flex-wrap gap-3">
+                            <a
+                                href={program.notionDetail}
+                                target="_blank"
+                                className="inline-flex items-center gap-2 px-5 py-3 rounded-lg bg-indigo-600 text-white font-medium shadow hover:opacity-95"
+                            >
+                                프로그램 상세 소개
+                            </a>
+                            <Link
+                                href="/detail"
+                                className="inline-flex items-center gap-2 px-5 py-3 rounded-lg border border-gray-300"
+                            >
+                                상세보기
+                            </Link>
                         </div>
-                        <nav className="hidden md:flex items-center gap-6 text-sm">
-                            <a
-                                className="hover:text-indigo-600"
-                                href="#programs"
+                    </motion.div>
+
+                    <motion.div
+                        initial={{ scale: 0.95, opacity: 0 }}
+                        animate={{ scale: 1, opacity: 1 }}
+                        transition={{ duration: 0.6 }}
+                        className="flex-1 w-full max-w-md"
+                    >
+                        <div className="rounded-2xl overflow-hidden shadow-xl bg-white">
+                            <img src="/insideout-hero.jpg" alt="마인드 포인트" className="w-full h-64 object-cover" />
+                        </div>
+                    </motion.div>
+                </div>
+            </section>
+
+            {/* Icon Grid Section */}
+            <section className="bg-white py-8">
+                <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+                    <div className="grid grid-cols-5 md:grid-cols-5 gap-y-6 text-center">
+                        {iconGridItems.map((item, i) => (
+                            <Link
+                                href={item.link}
+                                key={i}
+                                className="flex flex-col items-center justify-center space-y-2 group"
                             >
-                                프로그램
-                            </a>
-                            <a
-                                className="hover:text-indigo-600"
-                                href="#how"
-                            >
-                                진행방식
-                            </a>
-                            <a
-                                className="hover:text-indigo-600"
-                                href="#testimonials"
-                            >
-                                수강후기
-                            </a>
-                            <a
-                                className="px-4 py-2 rounded-lg bg-indigo-600 text-white text-sm hover:opacity-95"
-                                href="#signup"
-                            >
-                                지금 신청
-                            </a>
-                        </nav>
-                        <div className="md:hidden">{/* mobile menu placeholder */}</div>
+                                <motion.div
+                                    initial={{ scale: 0.8, opacity: 0 }}
+                                    animate={{ scale: 1, opacity: 1 }}
+                                    transition={{ duration: 0.3, delay: i * 0.05 }}
+                                    className="w-16 h-16 rounded-full bg-gray-100 flex items-center justify-center shadow-sm group-hover:bg-gray-200 transition-colors"
+                                >
+                                    {item.image ? (
+                                        <img src={item.image} alt={item.text} className="w-10 h-10 object-contain" />
+                                    ) : (
+                                        <span className={`text-4xl ${item.iconClass || ''}`}>{item.icon}</span>
+                                    )}
+                                </motion.div>
+                                <p className="text-sm font-medium text-gray-700 group-hover:text-indigo-600 transition-colors">
+                                    {item.text}
+                                </p>
+                            </Link>
+                        ))}
                     </div>
                 </div>
-            </header>
+            </section>
 
-            {/* Hero */}
-            <main>
-                <section className="relative overflow-hidden">
-                    <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-14 lg:py-20 flex flex-col lg:flex-row items-center gap-12">
-                        <motion.div
-                            initial={{ x: -40, opacity: 0 }}
-                            animate={{ x: 0, opacity: 1 }}
-                            transition={{ duration: 0.6 }}
-                            className="flex-1"
+            {/* InsideOut Programs Section */}
+            <section className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12 bg-gray-50 rounded-2xl shadow-sm mt-12">
+                <div className="flex justify-between items-center mb-6">
+                    <h2 className="text-2xl font-bold">🎯 인사이드아웃 등록 모임 & 프로그램</h2>
+                    <a href="#" className="text-orange-500 font-medium hover:underline">
+                        더보기 &rarr;
+                    </a>
+                </div>
+
+                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
+                    {recommendedPrograms.map((prog) => (
+                        <div
+                            key={prog.id}
+                            className="bg-white rounded-2xl shadow-md overflow-hidden hover:shadow-lg transition"
                         >
-                            <h1 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold leading-tight">
-                                내면에서 시작하는 성장,
-                                <br />
-                                <span className="text-indigo-600">InsideOut</span>
-                            </h1>
-                            <p className="mt-4 text-gray-600 max-w-xl">
-                                20-30대를 위한 실전 자기개발 프로그램 — 감정 이해, 목표 설계, 일상 습관화를 통해 지속
-                                가능한 성장을 돕습니다.
-                            </p>
-
-                            <div className="mt-6 flex flex-wrap gap-3">
-                                <a
-                                    href="#signup"
-                                    className="inline-flex items-center gap-2 px-5 py-3 rounded-lg bg-indigo-600 text-white font-medium shadow hover:opacity-95"
-                                >
-                                    지금 신청하기
-                                </a>
-                                <a
-                                    href="#programs"
-                                    className="inline-flex items-center gap-2 px-5 py-3 rounded-lg border border-gray-200 text-sm"
-                                >
-                                    프로그램 보기
-                                </a>
-                            </div>
-
-                            <div className="mt-8 grid grid-cols-2 sm:grid-cols-3 gap-3 max-w-md">
-                                <div className="p-3 bg-white rounded-lg shadow-sm">
-                                    <div className="text-sm font-semibold">소그룹</div>
-                                    <div className="text-xs text-gray-500">소수 인원 중심 몰입형</div>
-                                </div>
-                                <div className="p-3 bg-white rounded-lg shadow-sm">
-                                    <div className="text-sm font-semibold">전문 코치</div>
-                                    <div className="text-xs text-gray-500">심리·코칭 융합</div>
-                                </div>
-                                <div className="p-3 bg-white rounded-lg shadow-sm">
-                                    <div className="text-sm font-semibold">커뮤니티</div>
-                                    <div className="text-xs text-gray-500">지속적 지원과 모임</div>
-                                </div>
-                            </div>
-                        </motion.div>
-
-                        <motion.div
-                            initial={{ scale: 0.95, opacity: 0 }}
-                            animate={{ scale: 1, opacity: 1 }}
-                            transition={{ duration: 0.6 }}
-                            className="flex-1 w-full max-w-md"
-                        >
-                            <div className="rounded-2xl overflow-hidden shadow-xl bg-white">
-                                <img
-                                    src="/insideout-hero.jpg"
-                                    alt="hero"
-                                    className="w-full h-64 object-cover"
-                                />
-                                <div className="p-5">
-                                    <div className="text-sm text-gray-500">다음 기수</div>
-                                    <div className="mt-1 font-semibold">2025년 10월 시작 — 선착순 모집</div>
-                                    <p className="mt-3 text-gray-600 text-sm">
-                                        실전 과제와 피드백 중심의 커리큘럼. 각 회차 녹화 제공 및 커뮤니티 지속 지원.
-                                    </p>
-                                    <a
-                                        href="#signup"
-                                        className="mt-4 inline-block px-4 py-2 rounded-md bg-indigo-600 text-white text-sm"
-                                    >
-                                        신청하기
-                                    </a>
-                                </div>
-                            </div>
-                        </motion.div>
-                    </div>
-
-                    {/* Decorative shapes */}
-                    <div className="pointer-events-none absolute right-0 top-0 opacity-10 w-72 h-72 bg-gradient-to-br from-pink-300 to-indigo-400 rounded-full blur-3xl -translate-y-1/3 transform" />
-                </section>
-
-                {/* Programs */}
-                <section
-                    id="programs"
-                    className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12"
-                >
-                    <h2 className="text-2xl font-bold">프로그램</h2>
-                    <p className="mt-2 text-gray-600 max-w-2xl">
-                        실습 중심의 소규모 워크숍과 장기 코칭 트랙. 20-30대의 라이프스타일을 고려해 설계했습니다.
-                    </p>
-
-                    <div className="mt-6 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-                        {programs.map((p) => (
-                            <article
-                                key={p.id}
-                                className="bg-white rounded-2xl p-5 shadow-sm hover:shadow-md transition"
-                            >
-                                <div className="flex items-center justify-between">
-                                    <div>
-                                        <h3 className="text-lg font-semibold">{p.title}</h3>
-                                        <div className="text-sm text-indigo-600">{p.subtitle}</div>
-                                    </div>
-                                    <div className="text-sm text-gray-500">{p.duration}</div>
-                                </div>
-                                <p className="mt-3 text-gray-600 text-sm">{p.description}</p>
-                                <div className="mt-4 flex items-center gap-3">
-                                    <a
-                                        className="text-sm font-medium text-indigo-600"
-                                        href="#signup"
-                                    >
-                                        자세히 보기
-                                    </a>
-                                    <a className="ml-auto px-3 py-1 rounded-full border text-sm text-gray-600">
-                                        모집중
-                                    </a>
-                                </div>
-                            </article>
-                        ))}
-                    </div>
-                </section>
-
-                {/* How it works */}
-                <section
-                    id="how"
-                    className="bg-indigo-50 py-12"
-                >
-                    <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-                        <h2 className="text-2xl font-bold">진행 방식</h2>
-                        <div className="mt-6 grid gap-6 sm:grid-cols-3">
-                            <div className="p-5 bg-white rounded-2xl shadow-sm">
-                                <div className="text-sm font-semibold">1. 발견</div>
-                                <p className="mt-2 text-gray-600 text-sm">
-                                    체계적 질문과 저널링으로 현재의 감정·패턴을 확인합니다.
-                                </p>
-                            </div>
-                            <div className="p-5 bg-white rounded-2xl shadow-sm">
-                                <div className="text-sm font-semibold">2. 실험</div>
-                                <p className="mt-2 text-gray-600 text-sm">
-                                    작은 실험과 과제를 통해 새로운 행동을 시도합니다.
-                                </p>
-                            </div>
-                            <div className="p-5 bg-white rounded-2xl shadow-sm">
-                                <div className="text-sm font-semibold">3. 습관화</div>
-                                <p className="mt-2 text-gray-600 text-sm">
-                                    반복 피드백과 커뮤니티 지원으로 변화를 지속시킵니다.
-                                </p>
+                            <img src={prog.image} alt={prog.title} className="w-full h-48 object-cover" />
+                            <div className="p-4">
+                                <h3 className="font-semibold text-lg mb-2">{prog.title}</h3>
+                                <p className="text-gray-700 text-sm">{prog.subtitle}</p>
+                                <span className="text-orange-500 font-medium mt-2 block">NEW</span>
                             </div>
                         </div>
-                    </div>
-                </section>
-
-                {/* Testimonials */}
-                <section
-                    id="testimonials"
-                    className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12"
-                >
-                    <h2 className="text-2xl font-bold">수강 후기</h2>
-                    <div className="mt-6 grid gap-6 sm:grid-cols-2">
-                        {testimonials.map((t) => (
-                            <blockquote
-                                key={t.id}
-                                className="bg-white p-6 rounded-2xl shadow-sm"
-                            >
-                                <p className="text-gray-700">“{t.quote}”</p>
-                                <footer className="mt-4 text-sm text-gray-500">— {t.name}</footer>
-                            </blockquote>
-                        ))}
-                    </div>
-                </section>
-
-                {/* Signup */}
-                <section
-                    id="signup"
-                    className="bg-white py-12"
-                >
-                    <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
-                        <div className="rounded-2xl p-6 shadow-sm bg-gradient-to-br from-white to-indigo-50">
-                            <h3 className="text-xl font-bold">체험 신청서</h3>
-                            <p className="mt-2 text-sm text-gray-600">
-                                무료 오리엔테이션에 참여해 프로그램을 체험해보세요.
-                            </p>
-
-                            <form className="mt-6 grid gap-3 sm:grid-cols-2">
-                                <input
-                                    className="p-3 rounded-lg border"
-                                    placeholder="이름"
-                                />
-                                <input
-                                    className="p-3 rounded-lg border"
-                                    placeholder="연락처 (전화 또는 카카오톡)"
-                                />
-                                <input
-                                    className="p-3 rounded-lg border sm:col-span-2"
-                                    placeholder="간단한 관심 분야 (예: 관계/진로/습관)"
-                                />
-                                <button
-                                    type="button"
-                                    className="sm:col-span-2 px-4 py-3 rounded-lg bg-indigo-600 text-white"
-                                >
-                                    오리엔테이션 신청하기
-                                </button>
-                            </form>
-
-                            <div className="mt-4 text-xs text-gray-500">
-                                * 개인정보는 신청 확인 용도로만 사용합니다.
-                            </div>
-                        </div>
-                    </div>
-                </section>
-
-                {/* Footer */}
-                <footer className="bg-gray-100 py-8">
-                    <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row items-center justify-between gap-4">
-                        <div className="flex items-center gap-3">
-                            <div className="w-10 h-10 flex items-center justify-center rounded-2xl bg-gradient-to-br from-indigo-500 to-pink-500 text-white font-semibold">
-                                IO
-                            </div>
-                            <div>
-                                <div className="font-semibold">InsideOut</div>
-                                <div className="text-xs text-gray-500">내면에서 시작하는 성장</div>
-                            </div>
-                        </div>
-                        <div className="text-sm text-gray-600">
-                            © {new Date().getFullYear()} InsideOut — Designed for 20s & 30s
-                        </div>
-                    </div>
-                </footer>
-            </main>
+                    ))}
+                </div>
+            </section>
         </div>
     );
 }
