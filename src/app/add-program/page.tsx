@@ -12,7 +12,6 @@ interface Program {
     id: number;
     title: string;
     subtitle?: string | null;
-    image?: string | null;
     thumbnail?: string | null;
     created_at?: string | null;
     updated_at?: string | null;
@@ -21,7 +20,6 @@ interface Program {
 interface ProgramInsert {
     title: string;
     subtitle?: string | null;
-    image?: string | null;
     thumbnail?: string | null;
 }
 
@@ -91,7 +89,6 @@ export default function AddProgramPage() {
             const newProgram: ProgramInsert = {
                 title,
                 subtitle,
-                image: publicUrl,
                 thumbnail: publicUrl,
             };
 

@@ -8,7 +8,6 @@ const supabase = createClient(supabaseUrl, supabaseKey);
 export interface ProgramInsert {
     title: string;
     subtitle?: string | null;
-    image?: string | null;
     thumbnail?: string | null;
     link?: string | null;
 }
