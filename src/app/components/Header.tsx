@@ -27,12 +27,6 @@ export default function Header() {
                         <Link href="/contact" className="hover:text-indigo-600 transition-colors">
                             문의
                         </Link>
-                        <Link
-                            href="/apply"
-                            className="px-4 py-2 rounded-lg bg-indigo-600 text-white hover:opacity-90 transition-all"
-                        >
-                            지금 신청
-                        </Link>
                     </nav>
 
                     {/* 모바일 메뉴 아이콘 */}

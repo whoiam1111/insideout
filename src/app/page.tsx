@@ -88,20 +88,14 @@ export default function HomePage() {
                     >
                         ◀
                     </button>
-                    <div
-                        ref={carouselRef}
-                        className="flex space-x-4 overflow-x-auto scrollbar-hide py-2"
-                    >
+                    <div ref={carouselRef} className="flex space-x-4 overflow-x-auto scrollbar-hide py-2">
                         {recommendedPrograms.map((prog) => (
                             <motion.div
                                 key={prog.id}
                                 className="min-w-[250px] bg-white rounded-2xl shadow-md overflow-hidden flex-shrink-0 hover:shadow-lg transition"
                                 whileHover={{ scale: 1.03 }}
                             >
-                                <Link
-                                    href="#"
-                                    className="block"
-                                >
+                                <Link href="#" className="block">
                                     {prog.thumbnail && (
                                         <img
                                             src={prog.thumbnail}
@@ -143,15 +137,8 @@ export default function HomePage() {
                             <strong>기간:</strong> {program.duration} <br />
                         </p>
                         <div className="mt-6 flex flex-wrap gap-3">
-                            <a
-                                href={program.notionDetail}
-                                target="_blank"
-                                className="inline-flex items-center gap-2 px-5 py-3 rounded-lg bg-indigo-600 text-white font-medium shadow hover:opacity-95"
-                            >
-                                프로그램 상세 소개
-                            </a>
                             <Link
-                                href="/detail"
+                                href="/moim/mindpoint"
                                 className="inline-flex items-center gap-2 px-5 py-3 rounded-lg border border-gray-300"
                             >
                                 상세보기
@@ -166,11 +153,7 @@ export default function HomePage() {
                         className="flex-1 w-full max-w-md"
                     >
                         <div className="rounded-2xl overflow-hidden shadow-xl bg-white">
-                            <img
-                                src="/insideout-hero.jpg"
-                                alt="마인드 포인트"
-                                className="w-full h-64 object-cover"
-                            />
+                            <img src="/insideout-hero.jpg" alt="마인드 포인트" className="w-full h-64 object-cover" />
                         </div>
                     </motion.div>
                 </div>
@@ -193,11 +176,7 @@ export default function HomePage() {
                                     className="w-16 h-16 rounded-full bg-gray-100 flex items-center justify-center shadow-sm group-hover:bg-gray-200 transition-colors"
                                 >
                                     {item.image ? (
-                                        <img
-                                            src={item.image}
-                                            alt={item.text}
-                                            className="w-10 h-10 object-contain"
-                                        />
+                                        <img src={item.image} alt={item.text} className="w-10 h-10 object-contain" />
                                     ) : (
                                         <span className={`text-4xl ${item.iconClass || ''}`}>{item.icon}</span>
                                     )}
@@ -215,10 +194,7 @@ export default function HomePage() {
                 <div className="mb-12">
                     <div className="flex justify-between items-center mb-6">
                         <h2 className="text-2xl font-bold">🆕 최신 프로그램</h2>
-                        <Link
-                            href="#"
-                            className="text-orange-500 font-medium hover:underline"
-                        >
+                        <Link href="#" className="text-orange-500 font-medium hover:underline">
                             더보기 &rarr;
                         </Link>
                     </div>
