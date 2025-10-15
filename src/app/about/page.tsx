@@ -83,28 +83,6 @@ function IntroSection() {
                     있도록 설계되었습니다.
                 </p>
             </section>
-
-            {/* 멤버/팀 소개 */}
-            <section className="space-y-8 text-center">
-                <h2 className="text-3xl font-bold text-gray-800">함께하는 사람들</h2>
-                <p className="text-gray-600 max-w-xl mx-auto">
-                    인사이드아웃의 모임과 프로그램을 만들어가는 멤버, 파트너, 크루들이 있습니다.
-                </p>
-                <div className="grid grid-cols-2 sm:grid-cols-4 md:grid-cols-6 gap-6 justify-items-center mt-6">
-                    {['member1.jpg', 'member2.jpg', 'member3.jpg', 'member4.jpg', 'member5.jpg', 'member6.jpg'].map(
-                        (img, i) => (
-                            <div key={i} className="flex flex-col items-center">
-                                <img
-                                    src={`/images/${img}`}
-                                    alt={`팀원 ${i}`}
-                                    className="w-24 h-24 rounded-full object-cover shadow-md"
-                                />
-                                <span className="mt-2 text-sm font-medium text-gray-700">멤버 {i + 1}</span>
-                            </div>
-                        )
-                    )}
-                </div>
-            </section>
         </section>
     );
 }
