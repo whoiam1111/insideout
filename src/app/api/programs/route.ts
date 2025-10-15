@@ -9,7 +9,8 @@ export interface ProgramInsert {
     title: string;
     subtitle?: string | null;
     thumbnail?: string | null;
-    link?: string | null;
+    start_date?: string | null;
+    end_date?: string | null;
 }
 
 // ✅ GET: 프로그램 목록
@@ -29,28 +30,17 @@ export async function POST(req: NextRequest) {
         const body: ProgramInsert = await req.json();
         console.log('[POST Request Body]', body);
 
-        const { data, error, status } = await supabase.from('programs').insert([body]).select();
+        const { data, error } = await supabase.from('programs').insert([body]).select();
 
         if (error) {
-            console.error('[Supabase Insert Error]', error);
-            return NextResponse.json(
-                {
-                    error: error.message,
-                    details: error.details,
-                    hint: error.hint,
-                    code: error.code,
-                },
-                { status: status || 500 }
-            );
+            console.error('[Insert Error]', error);
+            return NextResponse.json({ error: error.message }, { status: 500 });
         }
 
         console.log('[Insert Success]', data);
         return NextResponse.json(data);
     } catch (err: unknown) {
         console.error('[POST Unknown Error]', err);
-        if (err instanceof Error) {
-            return NextResponse.json({ error: err.message, stack: err.stack }, { status: 500 });
-        }
-        return NextResponse.json({ error: '알 수 없는 오류' }, { status: 500 });
+        return NextResponse.json({ error: '서버 오류' }, { status: 500 });
     }
 }

@@ -2,24 +2,60 @@
 
 import { motion } from 'framer-motion';
 import Link from 'next/link';
-import { useRef } from 'react';
+import { useRef, useEffect, useState } from 'react';
+import { createClient } from '@supabase/supabase-js';
+
+// Supabase 설정
+const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!;
+const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!;
+const supabase = createClient(supabaseUrl, supabaseKey);
+
+interface Program {
+    id: number;
+    title: string;
+    subtitle?: string | null;
+    thumbnail?: string | null;
+    start_date?: string | null;
+    end_date?: string | null;
+}
 
 export default function HomePage() {
-    const program = {
-        name: '마인드 포인트(가제)',
-        target: '20대~30대 초반 청년층',
-        duration: '3주 (주 2회, 총 6회)',
-        notionDetail: '',
+    const [recommendedPrograms, setRecommendedPrograms] = useState<Program[]>([]);
+    const carouselRef = useRef<HTMLDivElement>(null);
+
+    // Supabase에서 프로그램 가져오기
+    const fetchPrograms = async () => {
+        try {
+            const { data, error } = await supabase
+                .from('programs')
+                .select('*')
+                .order('created_at', { ascending: false });
+
+            if (error) throw error;
+            if (data) setRecommendedPrograms(data as Program[]);
+        } catch (err) {
+            console.error('[Supabase Fetch Error]', err);
+            setRecommendedPrograms([]);
+        }
     };
 
-    const recommendedPrograms = [
-        { id: 1, title: '내면 탐색 워크숍', subtitle: '감정, 가치, 강점 발견하기', image: '/program1.jpg', link: '#' },
-        { id: 2, title: '고전 읽기 클럽', subtitle: '철학/문학 심층 토론', image: '/program2.jpg', link: '#' },
-        { id: 3, title: '리더십 성장 모임', subtitle: '커리어와 인간관계 개발', image: '/program3.jpg', link: '#' },
-        { id: 4, title: '문화예술 탐험', subtitle: '전시, 공연, 영화 리뷰', image: '/program4.jpg', link: '#' },
-        { id: 5, title: '금융 스터디', subtitle: '투자와 경제 이해', image: '/program5.jpg', link: '#' },
-    ];
+    useEffect(() => {
+        fetchPrograms();
+    }, []);
 
+    const scrollLeft = () => {
+        if (carouselRef.current) {
+            carouselRef.current.scrollBy({ left: -300, behavior: 'smooth' });
+        }
+    };
+
+    const scrollRight = () => {
+        if (carouselRef.current) {
+            carouselRef.current.scrollBy({ left: 300, behavior: 'smooth' });
+        }
+    };
+
+    // 기존 아이콘 그리드 유지
     const iconGridItems = [
         { icon: '📣', text: '오픈 임박!', link: '#' },
         { icon: '⏰', text: '마감 임박!', link: '#' },
@@ -33,18 +69,11 @@ export default function HomePage() {
         { icon: '더보기', iconClass: 'text-orange-400', image: '/arrow-down-circle.png', link: '/detail' },
     ];
 
-    const carouselRef = useRef<HTMLDivElement>(null);
-
-    const scrollLeft = () => {
-        if (carouselRef.current) {
-            carouselRef.current.scrollBy({ left: -300, behavior: 'smooth' });
-        }
-    };
-
-    const scrollRight = () => {
-        if (carouselRef.current) {
-            carouselRef.current.scrollBy({ left: 300, behavior: 'smooth' });
-        }
+    const program = {
+        name: '마인드 포인트(가제)',
+        target: '20대~30대 초반 청년층',
+        duration: '3주 (주 2회, 총 6회)',
+        notionDetail: '',
     };
 
     return (
@@ -59,15 +88,27 @@ export default function HomePage() {
                     >
                         ◀
                     </button>
-                    <div ref={carouselRef} className="flex space-x-4 overflow-x-auto scrollbar-hide py-2">
+                    <div
+                        ref={carouselRef}
+                        className="flex space-x-4 overflow-x-auto scrollbar-hide py-2"
+                    >
                         {recommendedPrograms.map((prog) => (
                             <motion.div
                                 key={prog.id}
                                 className="min-w-[250px] bg-white rounded-2xl shadow-md overflow-hidden flex-shrink-0 hover:shadow-lg transition"
                                 whileHover={{ scale: 1.03 }}
                             >
-                                <Link href={prog.link} className="block">
-                                    <img src={prog.image} alt={prog.title} className="w-full h-40 object-cover" />
+                                <Link
+                                    href="#"
+                                    className="block"
+                                >
+                                    {prog.thumbnail && (
+                                        <img
+                                            src={prog.thumbnail}
+                                            alt={prog.title}
+                                            className="w-full h-40 object-cover"
+                                        />
+                                    )}
                                     <div className="p-4">
                                         <h3 className="font-semibold text-lg">{prog.title}</h3>
                                         <p className="text-sm text-gray-600 mt-1">{prog.subtitle}</p>
@@ -85,7 +126,7 @@ export default function HomePage() {
                 </div>
             </section>
 
-            {/* Hero Section */}
+            {/* Hero Section (기존 유지) */}
             <section className="bg-gradient-to-br from-indigo-50 to-white py-20">
                 <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col lg:flex-row items-start gap-12">
                     <motion.div
@@ -125,7 +166,11 @@ export default function HomePage() {
                         className="flex-1 w-full max-w-md"
                     >
                         <div className="rounded-2xl overflow-hidden shadow-xl bg-white">
-                            <img src="/insideout-hero.jpg" alt="마인드 포인트" className="w-full h-64 object-cover" />
+                            <img
+                                src="/insideout-hero.jpg"
+                                alt="마인드 포인트"
+                                className="w-full h-64 object-cover"
+                            />
                         </div>
                     </motion.div>
                 </div>
@@ -148,7 +193,11 @@ export default function HomePage() {
                                     className="w-16 h-16 rounded-full bg-gray-100 flex items-center justify-center shadow-sm group-hover:bg-gray-200 transition-colors"
                                 >
                                     {item.image ? (
-                                        <img src={item.image} alt={item.text} className="w-10 h-10 object-contain" />
+                                        <img
+                                            src={item.image}
+                                            alt={item.text}
+                                            className="w-10 h-10 object-contain"
+                                        />
                                     ) : (
                                         <span className={`text-4xl ${item.iconClass || ''}`}>{item.icon}</span>
                                     )}
@@ -161,31 +210,79 @@ export default function HomePage() {
                     </div>
                 </div>
             </section>
-
-            {/* InsideOut Programs Section */}
-            <section className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12 bg-gray-50 rounded-2xl shadow-sm mt-12">
-                <div className="flex justify-between items-center mb-6">
-                    <h2 className="text-2xl font-bold">🎯 인사이드아웃 등록 모임 & 프로그램</h2>
-                    <a href="#" className="text-orange-500 font-medium hover:underline">
-                        더보기 &rarr;
-                    </a>
-                </div>
-
-                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
-                    {recommendedPrograms.map((prog) => (
-                        <div
-                            key={prog.id}
-                            className="bg-white rounded-2xl shadow-md overflow-hidden hover:shadow-lg transition"
+            <section className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+                {/* 최신 프로그램 */}
+                <div className="mb-12">
+                    <div className="flex justify-between items-center mb-6">
+                        <h2 className="text-2xl font-bold">🆕 최신 프로그램</h2>
+                        <Link
+                            href="#"
+                            className="text-orange-500 font-medium hover:underline"
                         >
-                            <img src={prog.image} alt={prog.title} className="w-full h-48 object-cover" />
-                            <div className="p-4">
-                                <h3 className="font-semibold text-lg mb-2">{prog.title}</h3>
-                                <p className="text-gray-700 text-sm">{prog.subtitle}</p>
-                                <span className="text-orange-500 font-medium mt-2 block">NEW</span>
-                            </div>
-                        </div>
-                    ))}
+                            더보기 &rarr;
+                        </Link>
+                    </div>
+                    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
+                        {recommendedPrograms
+                            .slice(0, 3) // 최신 3개
+                            .map((prog) => (
+                                <div
+                                    key={prog.id}
+                                    className="bg-white rounded-2xl shadow-md overflow-hidden hover:shadow-lg transition"
+                                >
+                                    {prog.thumbnail && (
+                                        <img
+                                            src={prog.thumbnail}
+                                            alt={prog.title}
+                                            className="w-full h-48 object-cover"
+                                        />
+                                    )}
+                                    <div className="p-4">
+                                        <h3 className="font-semibold text-lg mb-2">{prog.title}</h3>
+                                        <p className="text-gray-700 text-sm">{prog.subtitle}</p>
+                                        <span className="text-orange-500 font-medium mt-2 block">NEW</span>
+                                    </div>
+                                </div>
+                            ))}
+                    </div>
                 </div>
+
+                {/* 추천 프로그램 */}
+                {/* <div>
+                    <div className="flex justify-between items-center mb-6">
+                        <h2 className="text-2xl font-bold">🔥 추천 프로그램</h2>
+                        <Link
+                            href="#"
+                            className="text-orange-500 font-medium hover:underline"
+                        >
+                            더보기 &rarr;
+                        </Link>
+                    </div>
+                    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
+                        {recommendedPrograms
+                            .filter((p) => p.is_recommended) // 추천 프로그램만 필터링
+                            .slice(0, 3)
+                            .map((prog) => (
+                                <div
+                                    key={prog.id}
+                                    className="bg-white rounded-2xl shadow-md overflow-hidden hover:shadow-lg transition"
+                                >
+                                    {prog.thumbnail && (
+                                        <img
+                                            src={prog.thumbnail}
+                                            alt={prog.title}
+                                            className="w-full h-48 object-cover"
+                                        />
+                                    )}
+                                    <div className="p-4">
+                                        <h3 className="font-semibold text-lg mb-2">{prog.title}</h3>
+                                        <p className="text-gray-700 text-sm">{prog.subtitle}</p>
+                                        <span className="text-red-500 font-medium mt-2 block">추천</span>
+                                    </div>
+                                </div>
+                            ))}
+                    </div>
+                </div> */}
             </section>
         </div>
     );
