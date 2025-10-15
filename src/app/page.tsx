@@ -55,7 +55,7 @@ export default function HomePage() {
         }
     };
 
-    // 기존 아이콘 그리드 유지
+    // 기존 아이콘 그리드
     const iconGridItems = [
         { icon: '📣', text: '오픈 임박!', link: '#' },
         { icon: '⏰', text: '마감 임박!', link: '#' },
@@ -92,20 +92,20 @@ export default function HomePage() {
                         {recommendedPrograms.map((prog) => (
                             <motion.div
                                 key={prog.id}
-                                className="min-w-[250px] bg-white rounded-2xl shadow-md overflow-hidden flex-shrink-0 hover:shadow-lg transition"
+                                className="min-w-[250px] sm:min-w-[220px] bg-white rounded-2xl shadow-md overflow-hidden flex-shrink-0 hover:shadow-lg transition"
                                 whileHover={{ scale: 1.03 }}
                             >
-                                <Link href="#" className="block">
+                                <Link href={`/moim/${prog.id}`} className="block">
                                     {prog.thumbnail && (
                                         <img
                                             src={prog.thumbnail}
                                             alt={prog.title}
-                                            className="w-full h-40 object-cover"
+                                            className="w-full h-40 sm:h-36 object-cover"
                                         />
                                     )}
                                     <div className="p-4">
-                                        <h3 className="font-semibold text-lg">{prog.title}</h3>
-                                        <p className="text-sm text-gray-600 mt-1">{prog.subtitle}</p>
+                                        <h3 className="font-semibold text-lg truncate">{prog.title}</h3>
+                                        <p className="text-sm text-gray-600 truncate">{prog.subtitle}</p>
                                     </div>
                                 </Link>
                             </motion.div>
@@ -120,7 +120,7 @@ export default function HomePage() {
                 </div>
             </section>
 
-            {/* Hero Section (기존 유지) */}
+            {/* Hero Section */}
             <section className="bg-gradient-to-br from-indigo-50 to-white py-20">
                 <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col lg:flex-row items-start gap-12">
                     <motion.div
@@ -162,7 +162,7 @@ export default function HomePage() {
             {/* Icon Grid Section */}
             <section className="bg-white py-8">
                 <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-                    <div className="grid grid-cols-5 md:grid-cols-5 gap-y-6 text-center">
+                    <div className="grid grid-cols-3 sm:grid-cols-5 gap-y-6 text-center">
                         {iconGridItems.map((item, i) => (
                             <Link
                                 href={item.link}
@@ -189,8 +189,9 @@ export default function HomePage() {
                     </div>
                 </div>
             </section>
+
+            {/* 최신 프로그램 그리드 */}
             <section className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-                {/* 최신 프로그램 */}
                 <div className="mb-12">
                     <div className="flex justify-between items-center mb-6">
                         <h2 className="text-2xl font-bold">🆕 최신 프로그램</h2>
@@ -199,66 +200,28 @@ export default function HomePage() {
                         </Link>
                     </div>
                     <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
-                        {recommendedPrograms
-                            .slice(0, 3) // 최신 3개
-                            .map((prog) => (
-                                <div
-                                    key={prog.id}
-                                    className="bg-white rounded-2xl shadow-md overflow-hidden hover:shadow-lg transition"
-                                >
-                                    {prog.thumbnail && (
-                                        <img
-                                            src={prog.thumbnail}
-                                            alt={prog.title}
-                                            className="w-full h-48 object-cover"
-                                        />
-                                    )}
-                                    <div className="p-4">
-                                        <h3 className="font-semibold text-lg mb-2">{prog.title}</h3>
-                                        <p className="text-gray-700 text-sm">{prog.subtitle}</p>
-                                        <span className="text-orange-500 font-medium mt-2 block">NEW</span>
-                                    </div>
+                        {recommendedPrograms.slice(0, 6).map((prog) => (
+                            <Link
+                                href={`/moim/${prog.id}`}
+                                key={prog.id}
+                                className="bg-white rounded-2xl shadow-md overflow-hidden hover:shadow-lg transition flex flex-col"
+                            >
+                                {prog.thumbnail && (
+                                    <img
+                                        src={prog.thumbnail}
+                                        alt={prog.title}
+                                        className="w-full h-48 sm:h-40 object-cover"
+                                    />
+                                )}
+                                <div className="p-4 flex-1 flex flex-col justify-between">
+                                    <h3 className="font-semibold text-lg mb-1 truncate">{prog.title}</h3>
+                                    <p className="text-gray-700 text-sm truncate">{prog.subtitle}</p>
+                                    <span className="text-orange-500 font-medium mt-2 block">NEW</span>
                                 </div>
-                            ))}
+                            </Link>
+                        ))}
                     </div>
                 </div>
-
-                {/* 추천 프로그램 */}
-                {/* <div>
-                    <div className="flex justify-between items-center mb-6">
-                        <h2 className="text-2xl font-bold">🔥 추천 프로그램</h2>
-                        <Link
-                            href="#"
-                            className="text-orange-500 font-medium hover:underline"
-                        >
-                            더보기 &rarr;
-                        </Link>
-                    </div>
-                    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
-                        {recommendedPrograms
-                            .filter((p) => p.is_recommended) // 추천 프로그램만 필터링
-                            .slice(0, 3)
-                            .map((prog) => (
-                                <div
-                                    key={prog.id}
-                                    className="bg-white rounded-2xl shadow-md overflow-hidden hover:shadow-lg transition"
-                                >
-                                    {prog.thumbnail && (
-                                        <img
-                                            src={prog.thumbnail}
-                                            alt={prog.title}
-                                            className="w-full h-48 object-cover"
-                                        />
-                                    )}
-                                    <div className="p-4">
-                                        <h3 className="font-semibold text-lg mb-2">{prog.title}</h3>
-                                        <p className="text-gray-700 text-sm">{prog.subtitle}</p>
-                                        <span className="text-red-500 font-medium mt-2 block">추천</span>
-                                    </div>
-                                </div>
-                            ))}
-                    </div>
-                </div> */}
             </section>
         </div>
     );
