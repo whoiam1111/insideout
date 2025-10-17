@@ -1,28 +1,25 @@
 'use client';
 
-import { createClient } from '@supabase/supabase-js';
 import { useEffect, useState } from 'react';
-
-// Supabase 설정
-const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!;
-const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!;
-const supabase = createClient(supabaseUrl, supabaseKey);
+import { supabase } from '@/app/lib/supabase';
+import Link from 'next/link';
 
 interface MoimDetail {
     id: string;
     title: string;
-    description: string; // 상세 내용
-    category?: string; // 모임/챌린지/강연/클래스
+    description: string;
+    category?: string;
     city?: string;
     district?: string;
     capacity?: number;
-    duration_type?: string; // 단기/장기
+    duration_type?: string;
     time?: string;
-    date?: string; // 단기일 경우
-    days?: string[]; // 장기일 경우
+    date?: string;
     start_date?: string;
     end_date?: string;
     imageUrl?: string;
+    price?: number;
+    address?: string;
 }
 
 interface MoimDetailPageProps {
@@ -40,24 +37,23 @@ export default function MoimDetailPage({ params }: MoimDetailPageProps) {
 
                 if (error) throw error;
 
-                const moimData: MoimDetail = {
+                setMoim({
                     id: data.id.toString(),
                     title: data.title ?? '제목 없음',
-                    description: data.description ?? '',
-                    category: data.category ?? undefined,
-                    city: data.city ?? undefined,
-                    district: data.district ?? undefined,
-                    capacity: data.capacity ?? undefined,
-                    duration_type: data.duration_type ?? undefined,
-                    time: data.time ?? undefined,
-                    date: data.date ? data.date.toString() : undefined,
-                    days: data.days ?? undefined,
-                    start_date: data.start_date ? data.start_date.toString() : undefined,
-                    end_date: data.end_date ? data.end_date.toString() : undefined,
-                    imageUrl: data.thumbnail ?? undefined,
-                };
-
-                setMoim(moimData);
+                    description: data.description ?? '상세 설명이 없습니다.',
+                    category: data.category ?? '문화',
+                    city: data.city ?? '서울',
+                    district: data.district ?? '용산구',
+                    capacity: data.capacity ?? 10,
+                    duration_type: data.duration_type ?? '1회성',
+                    time: data.time ?? '13:00 - 18:00',
+                    date: data.date ? data.date.toString() : '',
+                    start_date: data.start_date ? data.start_date.toString() : '',
+                    end_date: data.end_date ? data.end_date.toString() : '',
+                    imageUrl: data.thumbnail ?? '',
+                    price: data.price ?? 0,
+                    address: data.address ?? '',
+                });
             } catch (err) {
                 console.error('[Supabase Fetch Error]', err);
                 setMoim(null);
@@ -69,59 +65,88 @@ export default function MoimDetailPage({ params }: MoimDetailPageProps) {
         fetchMoimDetail(params.id);
     }, [params.id]);
 
-    if (loading) return <p>불러오는 중...</p>;
-    if (!moim) return <p>모임 정보를 불러올 수 없습니다.</p>;
+    if (loading) return <p className="text-center text-gray-500 py-10 animate-pulse">불러오는 중...</p>;
+    if (!moim) return <p className="text-center text-gray-500 py-10">모임 정보를 불러올 수 없습니다.</p>;
+
+    const InfoSection = ({ title, children }: { title: string; children: React.ReactNode }) => (
+        <section className="py-6 border-b border-gray-200">
+            <h2 className="text-lg font-semibold text-gray-800 mb-4">{title}</h2>
+            {children}
+        </section>
+    );
 
     return (
-        <article className="py-8">
-            {moim.imageUrl && (
-                <img src={moim.imageUrl} alt={moim.title} className="w-full h-80 object-cover rounded-lg mb-8" />
-            )}
-            <h1 className="text-3xl font-bold mb-4">{moim.title}</h1>
-            <p className="text-lg text-gray-700 mb-4">{moim.description}</p>
-
-            <div className="grid grid-cols-2 gap-4 text-gray-700 mb-6">
-                {moim.category && (
-                    <p>
-                        <strong>카테고리:</strong> {moim.category}
-                    </p>
-                )}
-                {moim.city && (
-                    <p>
-                        <strong>지역:</strong> {moim.city} {moim.district ?? ''}
-                    </p>
-                )}
-                {moim.capacity !== undefined && (
-                    <p>
-                        <strong>정원:</strong> {moim.capacity}명
-                    </p>
-                )}
-                {moim.duration_type && (
-                    <p>
-                        <strong>기간 유형:</strong> {moim.duration_type}
-                    </p>
-                )}
-                {moim.time && (
-                    <p>
-                        <strong>시간:</strong> {moim.time}
-                    </p>
-                )}
-                {moim.date && (
-                    <p>
-                        <strong>일정:</strong> {moim.date}
-                    </p>
-                )}
-                {moim.days && (
-                    <p>
-                        <strong>요일:</strong> {moim.days.join(', ')}
-                    </p>
-                )}
-                {moim.start_date && moim.end_date && (
-                    <p>
-                        <strong>기간:</strong> {moim.start_date} ~ {moim.end_date}
-                    </p>
-                )}
+        <>
+            <div className="pt-16 pb-20 lg:pb-0 bg-white min-h-screen">
+                <article className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
+                    <section className="py-6 border-b border-gray-200">
+                        <h1 className="text-xl font-bold text-gray-800 mb-2">{moim.title}</h1>
+                        <div className="flex items-center space-x-2 text-sm text-gray-500 mb-1">
+                            <span>
+                                {moim.city} {moim.district}
+                            </span>
+                            <span className="w-1 h-1 bg-gray-300 rounded-full"></span>
+                            <span>{moim.time}</span>
+                        </div>
+                        <p className="text-3xl font-bold text-gray-900 mb-4">
+                            {moim.price?.toLocaleString()}
+                            <span className="text-base font-normal ml-1">원</span>
+                        </p>
+                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-3 text-gray-700 text-sm sm:text-base">
+                            {moim.category && (
+                                <p>
+                                    <strong className="text-gray-900">카테고리:</strong> {moim.category}
+                                </p>
+                            )}
+                            {moim.city && (
+                                <p>
+                                    <strong className="text-gray-900">지역:</strong> {moim.city} {moim.district}
+                                </p>
+                            )}
+                            {moim.capacity !== undefined && (
+                                <p>
+                                    <strong className="text-gray-900">정원:</strong> {moim.capacity}명
+                                </p>
+                            )}
+                            {moim.duration_type && (
+                                <p>
+                                    <strong className="text-gray-900">기간 유형:</strong> {moim.duration_type}
+                                </p>
+                            )}
+                            {moim.time && (
+                                <p>
+                                    <strong className="text-gray-900">시간:</strong> {moim.time}
+                                </p>
+                            )}
+                            {moim.date && (
+                                <p>
+                                    <strong className="text-gray-900">일정:</strong> {moim.date}
+                                </p>
+                            )}
+                            {moim.start_date && moim.end_date && (
+                                <p>
+                                    <strong className="text-gray-900">기간:</strong> {moim.start_date} ~ {moim.end_date}
+                                </p>
+                            )}
+                            {moim.address && (
+                                <p>
+                                    <strong className="text-gray-900">주소:</strong> {moim.address}
+                                </p>
+                            )}
+                        </div>
+                        {moim.imageUrl && (
+                            <div className="w-full rounded-2xl shadow-md overflow-hidden mt-6">
+                                <img src={moim.imageUrl} alt={moim.title} className="w-full h-auto object-cover" />
+                            </div>
+                        )}
+                        <div className="bg-gray-50 rounded-xl p-5 sm:p-6 mt-6 shadow-sm">
+                            <p className="text-base sm:text-lg text-gray-700 leading-relaxed whitespace-pre-line">
+                                {moim.description}
+                            </p>
+                        </div>
+                    </section>
+                </article>
             </div>
-        </article>
+        </>
     );
 }

@@ -3,9 +3,11 @@
 import Link from 'next/link';
 import { Bars3Icon, XMarkIcon } from '@heroicons/react/24/outline';
 import { useState } from 'react';
+import { useAuth } from '@/hooks/useAuth'; // ✅ 추가
 
 export default function Header() {
     const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+    const { user, signOut } = useAuth(); // ✅ 인증 상태 훅 사용
 
     return (
         <header className="sticky top-0 z-40 bg-white/80 backdrop-blur-sm shadow-sm">
@@ -30,6 +32,26 @@ export default function Header() {
                         <Link href="/contact" className="hover:text-indigo-600 transition-colors">
                             문의
                         </Link>
+
+                        {/* ✅ 로그인 상태 */}
+                        {user ? (
+                            <div className="flex items-center gap-3">
+                                <span className="text-gray-600 text-sm">{user.email}</span>
+                                <button
+                                    onClick={signOut}
+                                    className="px-3 py-1.5 text-sm rounded-lg border border-gray-300 hover:bg-gray-100 transition"
+                                >
+                                    로그아웃
+                                </button>
+                            </div>
+                        ) : (
+                            <Link
+                                href="/auth"
+                                className="px-3 py-1.5 text-sm rounded-lg bg-indigo-500 text-white hover:bg-indigo-600 transition"
+                            >
+                                로그인 / 회원가입
+                            </Link>
+                        )}
                     </nav>
 
                     {/* 모바일 메뉴 버튼 */}
@@ -76,6 +98,32 @@ export default function Header() {
                             >
                                 문의
                             </Link>
+                        </li>
+
+                        {/* ✅ 모바일용 로그인/로그아웃 */}
+                        <li className="border-t border-gray-200 pt-3 mt-3">
+                            {user ? (
+                                <div className="flex flex-col gap-2">
+                                    <span className="text-sm text-gray-600">{user.email}</span>
+                                    <button
+                                        onClick={() => {
+                                            signOut();
+                                            setMobileMenuOpen(false);
+                                        }}
+                                        className="w-full px-3 py-2 rounded-md bg-gray-100 hover:bg-gray-200 text-sm transition"
+                                    >
+                                        로그아웃
+                                    </button>
+                                </div>
+                            ) : (
+                                <Link
+                                    href="/auth"
+                                    onClick={() => setMobileMenuOpen(false)}
+                                    className="block px-3 py-2 rounded-md bg-indigo-500 text-white text-center hover:bg-indigo-600 transition"
+                                >
+                                    로그인 / 회원가입
+                                </Link>
+                            )}
                         </li>
                     </ul>
                 </nav>

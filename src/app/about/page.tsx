@@ -90,39 +90,57 @@ function IntroSection() {
 // 멤버십 섹션
 function MembershipSection() {
     return (
-        <section className="space-y-12">
-            <p className="text-gray-600 max-w-2xl mx-auto text-center">
-                인사이드아웃 멤버십에 가입하면 두 가지 디벨롭 혜택을 누릴 수 있습니다.
-            </p>
-            <div className="grid md:grid-cols-2 gap-8">
+        <section className="py-20 bg-gradient-to-b from-white to-indigo-50">
+            {/* 상단 문구 */}
+            <div className="text-center mb-14">
+                <h2 className="text-4xl font-extrabold text-gray-900 mb-4">인사이드아웃 멤버십</h2>
+                <p className="text-lg text-gray-600 max-w-2xl mx-auto">
+                    멤버십에 가입하면 <strong className="text-indigo-600">인사이드</strong>와{' '}
+                    <strong className="text-orange-500">아웃</strong> 두 가지 디벨롭 혜택을 함께 누릴 수 있습니다.
+                </p>
+            </div>
+
+            {/* 멤버십 카드 섹션 */}
+            <div className="grid md:grid-cols-2 gap-10 max-w-5xl mx-auto px-6">
                 {/* 인사이드 디벨롭 */}
-                <div className="bg-indigo-50 p-8 rounded-xl shadow-lg space-y-4 text-center">
-                    <h3 className="text-2xl font-bold text-indigo-700">인사이드 디벨롭</h3>
-                    <ul className="list-disc list-inside text-gray-700 space-y-2 text-left md:text-left">
-                        <li>자기 분석과 자기 인식 워크숍 참여</li>
-                        <li>내면 성장 코칭 프로그램 제공</li>
-                        <li>맞춤형 성장 콘텐츠 제공</li>
-                        <li>주 1회 멤버 전용 온라인 모임 참여</li>
-                    </ul>
+                <div className="relative bg-white rounded-2xl shadow-xl overflow-hidden group border border-indigo-100 hover:shadow-2xl transition">
+                    <div className="absolute inset-0 bg-gradient-to-br from-indigo-100/30 to-transparent opacity-0 group-hover:opacity-100 transition duration-500" />
+                    <div className="p-10 space-y-6 relative z-10">
+                        <h3 className="text-2xl font-bold text-indigo-700">인사이드 디벨롭</h3>
+                        <p className="text-gray-600">자신을 깊이 탐구하고, 내면의 성장을 도와주는 여정</p>
+                        <ul className="list-disc list-inside text-gray-700 space-y-2 text-left">
+                            <li>자기 분석 및 자기 인식 워크숍 참여</li>
+                            <li>1:1 내면 성장 코칭 프로그램</li>
+                            <li>맞춤형 성장 콘텐츠 제공</li>
+                            <li>주 1회 멤버 전용 온라인 모임</li>
+                        </ul>
+                    </div>
                 </div>
 
                 {/* 아웃 디벨롭 */}
-                <div className="bg-orange-50 p-8 rounded-xl shadow-lg space-y-4 text-center">
-                    <h3 className="text-2xl font-bold text-orange-600">아웃 디벨롭</h3>
-                    <ul className="list-disc list-inside text-gray-700 space-y-2 text-left md:text-left">
-                        <li>오프라인 모임 및 워크숍 참여</li>
-                        <li>그룹 코칭 프로그램 할인 혜택</li>
-                        <li>파트너 이벤트 초대</li>
-                        <li>커리어 성장과 네트워킹 기회 제공</li>
-                        <li>외부 활동 참여 및 실무 경험 확장</li>
-                    </ul>
+                <div className="relative bg-white rounded-2xl shadow-xl overflow-hidden group border border-orange-100 hover:shadow-2xl transition">
+                    <div className="absolute inset-0 bg-gradient-to-br from-orange-100/30 to-transparent opacity-0 group-hover:opacity-100 transition duration-500" />
+                    <div className="p-10 space-y-6 relative z-10">
+                        <h3 className="text-2xl font-bold text-orange-600">아웃 디벨롭</h3>
+                        <p className="text-gray-600">세상과 연결되고, 실무 경험과 네트워킹을 확장하는 단계</p>
+                        <ul className="list-disc list-inside text-gray-700 space-y-2 text-left">
+                            <li>오프라인 모임 및 워크숍 참여</li>
+                            <li>그룹 코칭 프로그램 할인 혜택</li>
+                            <li>파트너 이벤트 및 커리어 네트워킹</li>
+                            <li>외부 프로젝트 및 실무 경험 확장</li>
+                        </ul>
+                    </div>
                 </div>
             </div>
 
-            <div className="text-center">
-                <button className="mt-6 px-8 py-4 bg-indigo-600 text-white text-lg font-semibold rounded-xl shadow-lg hover:bg-indigo-700 transition">
+            {/* CTA 버튼 */}
+            <div className="text-center mt-16">
+                <button className="px-10 py-4 bg-gradient-to-r from-indigo-600 to-indigo-700 text-white text-lg font-semibold rounded-full shadow-lg hover:shadow-2xl transform hover:-translate-y-1 transition-all duration-300">
                     인사이드아웃 멤버십 가입하기
                 </button>
+                <p className="text-gray-500 text-sm mt-3">
+                    지금 가입하면 첫 달 <strong className="text-indigo-600">10% 할인</strong> 혜택 제공 🎉
+                </p>
             </div>
         </section>
     );

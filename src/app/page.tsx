@@ -70,7 +70,7 @@ export default function HomePage() {
     ];
 
     const program = {
-        name: '마인드 포인트(가제)',
+        name: '마인드 포인트',
         target: '20대~30대 초반 청년층',
         duration: '3주 (주 2회, 총 6회)',
         notionDetail: '',

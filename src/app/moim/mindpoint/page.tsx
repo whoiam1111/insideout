@@ -1,4 +1,3 @@
-// src/app/mindpoint/page.tsx
 'use client';
 
 export default function MindPointPage() {
@@ -42,67 +41,72 @@ export default function MindPointPage() {
             week: '3주차',
             session: '6회',
             title: '나의 이야기 만들기 - 나는 어떤 이야기의 주인공인가?',
-            activity: '자기 서사 만들기, 후속 소개',
+            activity: '자기 서사 만들기',
             goal: '약따기(인철종), 배움의 자세, 성경에 대한 경계 낮추기',
         },
     ];
 
     return (
-        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+        <div className="min-h-screen bg-gradient-to-b from-white to-indigo-50 py-20 px-6">
             {/* Hero */}
-            <div className="mb-12 text-center">
-                <h1 className="text-4xl font-extrabold mb-4">마인드 포인트 프로그램</h1>
-                <p className="text-lg text-gray-700">
-                    그룹 코칭 기반 자기 성장 프로그램
+            <div className="text-center mb-20">
+                <h1 className="text-5xl sm:text-6xl font-extrabold tracking-tight text-gray-900 mb-6">MIND POINT</h1>
+                <p className="text-lg sm:text-xl text-gray-600 leading-relaxed">
+                    <span className="font-medium text-indigo-600">그룹 코칭 기반</span> 자기 성장 프로그램
                     <br />
-                    3주 (주 2회, 총 6회)
+                    <span className="text-gray-800 font-semibold">3주 (주 2회, 총 6회)</span>
                 </p>
-                <p className="mt-2 text-gray-600">대상: 20대~30대 초반 청년층</p>
+                <p className="mt-4 text-gray-500 text-sm uppercase tracking-widest">대상: 20대~30대 초반 청년층</p>
             </div>
 
             {/* 회차별 프로그램 */}
-            <div className="mb-12 overflow-x-auto">
-                <h2 className="text-2xl font-bold mb-4">회차별 프로그램 구성</h2>
-                <table className="w-full table-auto border border-gray-300">
-                    <thead className="bg-gray-100">
-                        <tr>
-                            <th className="border px-3 py-2">주차</th>
-                            <th className="border px-3 py-2">회차</th>
-                            <th className="border px-3 py-2">주제</th>
-                            <th className="border px-3 py-2">주요 활동</th>
-                            <th className="border px-3 py-2">단계향상목표</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {sessions.map((s, idx) => (
-                            <tr key={idx} className="even:bg-gray-50">
-                                <td className="border px-3 py-2">{s.week}</td>
-                                <td className="border px-3 py-2">{s.session}</td>
-                                <td className="border px-3 py-2">{s.title}</td>
-                                <td className="border px-3 py-2">{s.activity}</td>
-                                <td className="border px-3 py-2">{s.goal}</td>
-                            </tr>
-                        ))}
-                    </tbody>
-                </table>
-            </div>
+            <section className="mb-20">
+                <h2 className="text-3xl font-bold mb-8 text-gray-900 text-center">회차별 프로그램 구성</h2>
+
+                <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+                    {sessions.map((s, idx) => (
+                        <div
+                            key={idx}
+                            className="bg-white/80 backdrop-blur-sm border border-gray-200 rounded-2xl p-6 shadow-sm hover:shadow-md transition-all duration-300 group hover:-translate-y-1"
+                        >
+                            <div className="flex justify-between items-center mb-2">
+                                <span className="text-sm font-semibold text-indigo-600">
+                                    {s.week} • {s.session}
+                                </span>
+                            </div>
+                            <h3 className="text-xl font-bold text-gray-900 mb-3 group-hover:text-indigo-700 transition">
+                                {s.title}
+                            </h3>
+                            <p className="text-gray-700 mb-2">
+                                <strong className="text-gray-900">활동:</strong> {s.activity}
+                            </p>
+                            {/* <p className="text-gray-600 text-sm leading-snug">
+                                <strong className="text-gray-800">목표:</strong> {s.goal}
+                            </p> */}
+                        </div>
+                    ))}
+                </div>
+            </section>
 
             {/* 활용 */}
-            <div className="mb-12">
-                <h2 className="text-2xl font-bold mb-4">활용</h2>
-                <ul className="list-disc pl-5 space-y-2 text-gray-700">
-                    <li>개인 코칭 / 그룹 코칭 모두 진행 가능 (2인 이상 권장)</li>
-                    <li>개인 상담 도구 병행 가능 (에니어그램, 그림상담 도구 등)</li>
-                    <li>노방 활동 없이 프로그램 활용 가능</li>
-                    <li>미니 강의는 교사가 직접 진행하거나, 특강자 초청 가능</li>
+            <section className="mb-20 max-w-3xl mx-auto text-center">
+                <h2 className="text-3xl font-bold mb-6 text-gray-900">활용</h2>
+                <ul className="space-y-3 text-gray-700 text-lg">
+                    <li>• 개인 코칭 / 그룹 코칭 모두 진행 가능 (2인 이상 권장)</li>
+                    <li>• 에니어그램, 그림상담 도구 등 병행 가능</li>
+                    <li>• 노방 활동 없이 프로그램만으로도 활용 가능</li>
+                    <li>• 미니 강의는 직접 진행 또는 특강자 초청 가능</li>
                 </ul>
-            </div>
+            </section>
 
             {/* 후속 프로그램 */}
-            <div>
-                <h2 className="text-2xl font-bold mb-4">후속 프로그램 소개</h2>
-                <p className="text-gray-700">자세한 후속 프로그램 내용은 내부 안내 자료를 참고하세요.</p>
-            </div>
+            {/* <section className="text-center">
+                <h2 className="text-3xl font-bold mb-4 text-gray-900">후속 프로그램 소개</h2>
+                <p className="text-gray-700 text-lg">자세한 내용은 내부 안내 자료를 통해 확인하실 수 있습니다.</p>
+                <button className="mt-8 px-8 py-3 bg-gradient-to-r from-indigo-600 to-indigo-700 text-white text-lg font-semibold rounded-full shadow-lg hover:shadow-xl transform hover:-translate-y-1 transition-all duration-300">
+                    안내 자료 요청하기
+                </button>
+            </section> */}
         </div>
     );
 }
