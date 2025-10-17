@@ -3,8 +3,8 @@ import Header from './components/Header';
 import Footer from './components/Footer';
 
 export const metadata = {
-    title: 'Munto Clone | 추천 모임',
-    description: '문토 스타일 청년 모임 플랫폼 클론',
+    title: '내 안을 밖으로 | INSIDEOUT',
+    description: '2030 모임 플랫폼',
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
