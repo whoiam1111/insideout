@@ -3,24 +3,25 @@
 import Link from 'next/link';
 import { Bars3Icon, XMarkIcon } from '@heroicons/react/24/outline';
 import { useState } from 'react';
-import { useAuth } from '@/hooks/useAuth'; // ✅ 추가
+import { useAuth } from '@/hooks/useAuth';
 
 export default function Header() {
     const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-    const { user, signOut } = useAuth(); // ✅ 인증 상태 훅 사용
+    const { user, signOut } = useAuth();
 
     return (
         <header className="sticky top-0 z-40 bg-white/80 backdrop-blur-sm shadow-sm">
             <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-                <div className="flex items-center justify-between h-16">
+                <div className="flex items-center justify-between h-20">
+                    {' '}
+                    {/* 높이도 조금 키움 */}
                     {/* 로고 */}
-                    <Link href="/" className="flex items-center gap-3">
-                        <div className="w-10 h-10 flex items-center justify-center rounded-2xl bg-gradient-to-br from-indigo-500 to-pink-500 text-white font-semibold">
-                            IO
+                    <Link href="/" className="flex items-center gap-4">
+                        <div className="w-16 h-16 flex items-center justify-center rounded-2xl bg-white shadow">
+                            <img src="/logo.png" alt="InsideOut 로고" className="w-14 h-14 object-contain" />
                         </div>
-                        <span className="font-semibold text-gray-800">InsideOut</span>
+                        <span className="font-bold text-gray-800 text-xl sm:text-2xl">InsideOut</span>
                     </Link>
-
                     {/* 데스크탑 네비게이션 */}
                     <nav className="hidden md:flex items-center gap-6 text-sm font-medium text-gray-700">
                         <Link href="/moim" className="hover:text-indigo-600 transition-colors">
@@ -33,7 +34,7 @@ export default function Header() {
                             문의
                         </Link>
 
-                        {/* ✅ 로그인 상태 */}
+                        {/* 로그인 상태 */}
                         {user ? (
                             <div className="flex items-center gap-3">
                                 <span className="text-gray-600 text-sm">{user.email}</span>
@@ -53,7 +54,6 @@ export default function Header() {
                             </Link>
                         )}
                     </nav>
-
                     {/* 모바일 메뉴 버튼 */}
                     <div className="md:hidden flex items-center">
                         <button
@@ -100,7 +100,7 @@ export default function Header() {
                             </Link>
                         </li>
 
-                        {/* ✅ 모바일용 로그인/로그아웃 */}
+                        {/* 모바일 로그인/로그아웃 */}
                         <li className="border-t border-gray-200 pt-3 mt-3">
                             {user ? (
                                 <div className="flex flex-col gap-2">
