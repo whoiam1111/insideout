@@ -49,6 +49,7 @@ export default function AddProgramPage() {
     const [price, setPrice] = useState<number | ''>('');
     const [tagInput, setTagInput] = useState('');
     const [tags, setTags] = useState<string[]>([]);
+    const [editId, setEditId] = useState<number | null>(null); // ✨ 수정 중인지 구분
 
     // 프로그램 목록 불러오기
     const fetchPrograms = async () => {
@@ -63,7 +64,7 @@ export default function AddProgramPage() {
         }
     };
 
-    // 서브카테고리 목록 불러오기
+    // 서브카테고리 불러오기
     useEffect(() => {
         const fetchSubcategories = async () => {
             try {
@@ -71,7 +72,6 @@ export default function AddProgramPage() {
                 const data = await res.json();
                 // eslint-disable-next-line @typescript-eslint/no-explicit-any
                 if (Array.isArray(data)) setSubcategories(data.map((c: any) => c.text));
-                console.log(data, '?data');
             } catch (err) {
                 console.error('[Fetch Subcategories Error]', err);
             }
@@ -83,7 +83,6 @@ export default function AddProgramPage() {
         fetchPrograms();
     }, []);
 
-    // 미리보기 메모리 해제
     useEffect(() => {
         return () => {
             if (preview) URL.revokeObjectURL(preview);
@@ -120,15 +119,82 @@ export default function AddProgramPage() {
         setTags((prev) => prev.filter((tag) => tag !== tagToRemove));
     };
 
+    // ✨ 수정 모드 진입
+    const handleEdit = (program: Program) => {
+        setEditId(program.id);
+        setTitle(program.title);
+        setSubtitle(program.subtitle || '');
+        setCategory(program.category || '');
+        setSubcategory(program.subcategory || '');
+        setCity(program.city || '');
+        setDistrict(program.district || '');
+        setDescription(program.description || '');
+        setCapacity(program.capacity || '');
+        setDurationType(program.duration_type || '단기');
+        setTime(program.time || '');
+        setDate(program.date || '');
+        setDays(program.days || []);
+        setStartDate(program.start_date || '');
+        setEndDate(program.end_date || '');
+        setPreview(program.thumbnail || null);
+        setPrice(program.price || '');
+        setTags(program.tags || []);
+        setMessage(`✏️ "${program.title}" 수정 중입니다.`);
+    };
+
+    // ✨ 수정 취소
+    const handleCancelEdit = () => {
+        resetForm();
+        setEditId(null);
+        setMessage('✋ 수정이 취소되었습니다.');
+    };
+
+    // ✨ 삭제
+    const handleDelete = async (id: number) => {
+        if (!confirm('정말 삭제하시겠습니까?')) return;
+        try {
+            const res = await fetch(`/api/programs/${id}`, { method: 'DELETE' });
+            if (!res.ok) throw new Error('삭제 실패');
+            setMessage('🗑️ 삭제 완료');
+            fetchPrograms();
+        } catch (err) {
+            console.error(err);
+            setMessage('⚠️ 삭제 중 오류 발생');
+        }
+    };
+
+    // 폼 초기화
+    const resetForm = () => {
+        setTitle('');
+        setSubtitle('');
+        setCategory('');
+        setSubcategory('');
+        setCity('');
+        setDistrict('');
+        setDescription('');
+        setCapacity('');
+        setDurationType('단기');
+        setTime('');
+        setDate('');
+        setDays([]);
+        setStartDate('');
+        setEndDate('');
+        setFile(null);
+        setPreview(null);
+        setPrice('');
+        setTagInput('');
+        setTags([]);
+    };
+
+    // 등록 또는 수정
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         setLoading(true);
         setMessage('');
 
         try {
-            let publicUrl: string | null = null;
+            let publicUrl: string | null = preview;
 
-            // 이미지 업로드
             if (file) {
                 const formData = new FormData();
                 formData.append('file', file);
@@ -138,8 +204,7 @@ export default function AddProgramPage() {
                 publicUrl = uploadData.url;
             }
 
-            // DB 저장
-            const newProgram: ProgramInsert = {
+            const programData: ProgramInsert = {
                 title,
                 subtitle,
                 category,
@@ -159,42 +224,33 @@ export default function AddProgramPage() {
                 tags: tags.length > 0 ? tags : null,
             };
 
-            const res = await fetch('/api/programs', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(newProgram),
-            });
+            if (editId) {
+                // ✨ 수정 요청
+                const res = await fetch(`/api/programs/${editId}`, {
+                    method: 'PUT',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(programData),
+                });
+                if (!res.ok) throw new Error('수정 실패');
+                setMessage(`✅ "${title}" 수정 완료!`);
+            } else {
+                // 신규 등록
+                const res = await fetch('/api/programs', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(programData),
+                });
+                if (!res.ok) throw new Error('등록 실패');
+                setMessage(`✅ "${title}" 프로그램이 등록되었습니다!`);
+            }
 
-            const data = await res.json();
-            if (!res.ok || data.error) throw new Error(data.error || '모임 추가 실패');
-
-            setMessage(`✅ "${title}" 프로그램이 등록되었습니다!`);
-
-            // 폼 초기화
-            setTitle('');
-            setSubtitle('');
-            setCategory('');
-            setSubcategory('');
-            setCity('');
-            setDistrict('');
-            setDescription('');
-            setCapacity('');
-            setDurationType('단기');
-            setTime('');
-            setDate('');
-            setDays([]);
-            setStartDate('');
-            setEndDate('');
-            setFile(null);
-            setPreview(null);
-            setPrice('');
-            setTagInput('');
-            setTags([]);
+            resetForm();
+            setEditId(null);
             fetchPrograms();
-        } catch (err: unknown) {
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        } catch (err: any) {
             console.error('[Submit Error]', err);
-            const msg = err instanceof Error ? err.message : '알 수 없는 오류';
-            setMessage(`⚠️ 등록 실패: ${msg}`);
+            setMessage(`⚠️ 오류: ${err.message}`);
         } finally {
             setLoading(false);
         }
@@ -202,17 +258,23 @@ export default function AddProgramPage() {
 
     return (
         <div className="max-w-3xl mx-auto py-10 px-4 sm:px-6 lg:px-8">
-            <h1 className="text-3xl font-bold mb-6 text-gray-900">➕ 새 프로그램 등록</h1>
+            <h1 className="text-3xl font-bold mb-6 text-gray-900">
+                {editId ? '✏️ 프로그램 수정' : '➕ 새 프로그램 등록'}
+            </h1>
 
             {message && (
                 <p
                     className={`mb-4 p-3 rounded-lg ${
-                        message.startsWith('✅') ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-700'
+                        message.startsWith('✅') || message.startsWith('✏️')
+                            ? 'bg-green-100 text-green-700'
+                            : 'bg-red-100 text-red-700'
                     }`}
                 >
                     {message}
                 </p>
             )}
+
+            {/* 등록/수정 폼 */}
 
             <form onSubmit={handleSubmit} className="space-y-6 mb-12 bg-white p-6 rounded-xl shadow-sm">
                 {/* 이름 & 부제 */}
@@ -521,11 +583,21 @@ export default function AddProgramPage() {
                     disabled={loading}
                     className="w-full bg-indigo-600 text-white font-semibold py-3 rounded-lg hover:bg-indigo-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
                 >
-                    {loading ? '프로그램 등록 중...' : '프로그램 등록'}
+                    {loading ? '처리 중...' : editId ? '수정 완료' : '프로그램 등록'}
                 </button>
+
+                {editId && (
+                    <button
+                        type="button"
+                        onClick={handleCancelEdit}
+                        className="w-full mt-2 bg-gray-200 text-gray-800 font-semibold py-3 rounded-lg hover:bg-gray-300 transition-colors"
+                    >
+                        수정 취소
+                    </button>
+                )}
             </form>
 
-            {/* 등록된 프로그램 리스트 */}
+            {/* 프로그램 리스트 */}
             <h2 className="text-2xl font-bold mb-5 text-gray-900">📋 등록된 프로그램</h2>
             <ul className="space-y-4">
                 {programs.length === 0 && (
@@ -570,10 +642,20 @@ export default function AddProgramPage() {
                                 </div>
                             )}
                         </div>
-                        <div className="text-gray-500 text-sm mt-2 sm:mt-0 sm:text-right">
-                            <p>{p.time}</p>
-                            <p>{p.duration_type === '단기' ? p.date : `${p.start_date} ~ ${p.end_date}`}</p>
-                            {p.duration_type === '장기' && p.days && p.days.length > 0 && <p>({p.days.join(', ')})</p>}
+
+                        <div className="flex flex-col gap-2 items-end">
+                            <button
+                                onClick={() => handleEdit(p)}
+                                className="px-3 py-1 text-sm bg-yellow-100 text-yellow-800 rounded hover:bg-yellow-200"
+                            >
+                                수정
+                            </button>
+                            <button
+                                onClick={() => handleDelete(p.id)}
+                                className="px-3 py-1 text-sm bg-red-100 text-red-800 rounded hover:bg-red-200"
+                            >
+                                삭제
+                            </button>
                         </div>
                     </li>
                 ))}
