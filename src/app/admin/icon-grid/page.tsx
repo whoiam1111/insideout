@@ -30,7 +30,7 @@ export default function IconGridManager() {
 
     const fetchCategories = async () => {
         try {
-            const res = await fetch('/api/icongrid');
+            const res = await fetch('/api/icon_grid');
             const data = await res.json();
             setItems(Array.isArray(data) ? data : []);
         } catch (err) {
