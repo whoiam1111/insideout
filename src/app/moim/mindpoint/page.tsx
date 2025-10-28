@@ -1,6 +1,7 @@
 "use client";
 
 import Image from "next/image";
+import Link from "next/link";
 import { useState } from "react"; // FAQ 아코디언 기능을 위해 useState 추가
 
 export default function MindPointPage() {
@@ -89,7 +90,7 @@ export default function MindPointPage() {
         <div className="min-h-screen font-sans text-gray-900">
             {/* Hero Section */}
             <section className="py-16 md:py-24 bg-gray-50">
-                <div className="max-w-7xl mx-auto px-6 grid md:grid-cols-2 gap-12 items-center">
+                <div className="max-w-6xl mx-auto px-6 grid md:grid-cols-2 gap-12 items-center">
                     {/* Left - Poster */}
                     <div className="flex justify-center md:justify-start">
                         <div className="relative w-full max-w-sm rounded-xl overflow-hidden shadow-xl ring-1 ring-gray-200/50">
@@ -130,12 +131,13 @@ export default function MindPointPage() {
                             </span>
                         </p>
                         <div className="flex flex-col sm:flex-row justify-center md:justify-start gap-4">
-                            <button
-                                className="px-8 py-3 border border-gray-300 text-gray-700 font-semibold rounded-full bg-white shadow-sm 
-                            hover:bg-gray-50 transform hover:-translate-y-1 transition-all duration-300 cursor-pointer"
+                            <Link
+                                href={"https://www.latpeed.com/products/DOKgG"}
+                                className="px-20 py-3 border border-indigo-500 text-white font-semibold rounded-full bg-indigo-500 shadow-sm 
+                            hover:bg-indigo-600 transform hover:-translate-y-1 transition-all duration-300 cursor-pointer"
                             >
-                                문의하기
-                            </button>
+                                신청하기
+                            </Link>
                         </div>
                     </div>
                 </div>
@@ -143,7 +145,7 @@ export default function MindPointPage() {
 
             {/* Introduction Section */}
             <section className="py-16 bg-white">
-                <div className="max-w-7xl mx-auto px-6">
+                <div className="max-w-6xl mx-auto px-6">
                     <h2 className="text-xl md:text-3xl font-bold text-gray-900 text-center mb-12">
                         “당신의 마음이 머무는 지점, 삶의 의미가 시작되는 좌표.”
                     </h2>
@@ -175,7 +177,7 @@ export default function MindPointPage() {
 
             {/* Expectation Section */}
             <section className="py-16 bg-white">
-                <div className="max-w-7xl mx-auto px-6">
+                <div className="max-w-6xl mx-auto px-6">
                     <h2 className="text-2xl md:text-3xl font-bold text-gray-900 text-center mb-8 md:mb-12">
                         🎯 기대 효과
                     </h2>
@@ -196,7 +198,7 @@ export default function MindPointPage() {
 
             {/* Recommend Section */}
             <section className="py-16 bg-white">
-                <div className="max-w-7xl mx-auto px-6">
+                <div className="max-w-6xl mx-auto px-6">
                     <h2 className="text-2xl md:text-3xl font-bold text-gray-900 text-center mb-8 md:mb-12">
                         🚀 이런 분들에게 추천합니다
                     </h2>
@@ -218,7 +220,7 @@ export default function MindPointPage() {
 
             {/* Session Program Section */}
             <section className="py-16 bg-white">
-                <div className="max-w-7xl mx-auto px-6">
+                <div className="max-w-6xl mx-auto px-6">
                     <h2 className="text-2xl md:text-3xl font-bold text-gray-900 text-center mb-8 md:mb-12">
                         📚 회차별 프로그램 구성
                     </h2>
@@ -249,7 +251,7 @@ export default function MindPointPage() {
 
             {/* FAQ Section */}
             <section className="py-16 bg-gray-50">
-                <div className="max-w-7xl mx-auto px-6">
+                <div className="max-w-6xl mx-auto px-6">
                     <h2 className="text-2xl md:text-3xl font-bold text-gray-900 text-center mb-8 md:mb-12">
                         ⁉️ 자주 묻는 질문
                     </h2>
@@ -297,7 +299,7 @@ export default function MindPointPage() {
 
             {/* CTA Section */}
             <section className="py-16 bg-white">
-                <div className="max-w-7xl mx-auto px-6">
+                <div className="max-w-6xl mx-auto px-6">
                     <h2 className="text-2xl md:text-3xl font-bold text-gray-900 text-center mb-8 md:mb-12">
                         📍 마인드 포인트에서 만나는 변화와 성장의 여정
                     </h2>
@@ -316,12 +318,13 @@ export default function MindPointPage() {
                         찾아보세요.
                     </div>
                     <div className="flex justify-center">
-                        <button
+                        <Link
+                            href={"https://www.latpeed.com/products/DOKgG"}
                             className="bg-indigo-500 px-20 py-3 border border-gray-300 text-white font-semibold rounded-full shadow-sm
-                          hover:bg-indigo-600 transform hover:-translate-y-1 transition-all duration-300 cursor-pointer"
+                        hover:bg-indigo-600 transform hover:-translate-y-1 transition-all duration-300 cursor-pointer"
                         >
                             신청하기
-                        </button>
+                        </Link>
                     </div>
                 </div>
             </section>
