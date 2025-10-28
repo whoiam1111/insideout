@@ -1,4 +1,4 @@
-'use client';
+"use client";
 
 interface Program {
     id: string;
@@ -15,13 +15,18 @@ interface ProgramListProps {
 
 export default function ProgramList({ moims }: ProgramListProps) {
     if (!moims || moims.length === 0) {
-        return <p className="text-center text-gray-500 mt-8">모임이 없습니다.</p>;
+        return (
+            <p className="text-center text-gray-500 mt-8">모임이 없습니다.</p>
+        );
     }
 
     return (
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8">
             {moims.map((program) => {
-                const href = program.title === '마인드 포인트' ? '/moim/mindpoint' : `/moim/${program.id}`;
+                const href =
+                    program.title === "마인드 포인트"
+                        ? "/moim/mindpoint"
+                        : `/moim/${program.id}`;
 
                 return (
                     <a
@@ -30,7 +35,7 @@ export default function ProgramList({ moims }: ProgramListProps) {
                         className="group block rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition-shadow duration-300 bg-white"
                     >
                         {/* 이미지 영역 */}
-                        <div className="relative w-full h-64 md:h-72 overflow-hidden">
+                        <div className="relative w-full aspect-16/9 overflow-hidden">
                             <img
                                 src={program.imageUrl}
                                 alt={program.title}
@@ -53,11 +58,15 @@ export default function ProgramList({ moims }: ProgramListProps) {
                         </div>
 
                         {/* 텍스트 영역 */}
-                        <div className="p-5">
-                            <h3 className="text-lg font-bold text-gray-900 mb-2">{program.title}</h3>
+                        <div className="px-5 py-4">
+                            <h3 className="text-lg font-bold text-gray-900 mb-2">
+                                {program.title}
+                            </h3>
 
                             {program.subtitle && (
-                                <p className="text-gray-600 text-sm line-clamp-3 mb-3">{program.subtitle}</p>
+                                <p className="text-gray-600 text-sm line-clamp-3">
+                                    {program.subtitle}
+                                </p>
                             )}
 
                             {/* 가격 */}
