@@ -3,7 +3,7 @@ import { useState, useEffect } from 'react';
 
 interface CategoryItem {
     id: number;
-    order_no: number; // 1~9까지 순서 관리
+    order_no: number;
     icon?: string | null;
     text: string;
     link: string;
@@ -14,6 +14,7 @@ export default function IconGridManager() {
     const [items, setItems] = useState<CategoryItem[]>([]);
     const [file, setFile] = useState<File | null>(null);
     const [preview, setPreview] = useState<string | null>(null);
+    const [editingId, setEditingId] = useState<number | null>(null); // 수정용
     const [form, setForm] = useState<Omit<CategoryItem, 'id'>>({
         order_no: 1,
         icon: '',
@@ -32,7 +33,8 @@ export default function IconGridManager() {
         try {
             const res = await fetch('/api/icon_grid');
             const data = await res.json();
-            setItems(Array.isArray(data) ? data : []);
+            const sorted = Array.isArray(data) ? data.sort((a, b) => a.order_no - b.order_no) : [];
+            setItems(sorted);
         } catch (err) {
             console.error(err);
             setItems([]);
@@ -62,24 +64,36 @@ export default function IconGridManager() {
                 imageUrl = data.url;
             }
 
-            const newItem: Omit<CategoryItem, 'id'> = {
+            const payload: Omit<CategoryItem, 'id'> = {
                 ...form,
                 image: imageUrl ?? form.image ?? null,
             };
 
-            const res = await fetch('/api/icon_grid', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(newItem),
-            });
+            let res;
+            if (editingId) {
+                // 수정
+                res = await fetch(`/api/icon_grid/${editingId}`, {
+                    method: 'PATCH',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload),
+                });
+            } else {
+                // 새로 등록
+                res = await fetch('/api/icon_grid', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload),
+                });
+            }
 
             const data = await res.json();
-            if (!res.ok) throw new Error(data.error || '등록 실패');
+            if (!res.ok) throw new Error(data.error || '등록/수정 실패');
 
-            setMessage('✅ 카테고리가 추가되었습니다!');
+            setMessage(editingId ? '✅ 카테고리가 수정되었습니다!' : '✅ 카테고리가 추가되었습니다!');
             setForm({ order_no: 1, icon: '', text: '', link: '', image: '' });
             setFile(null);
             setPreview(null);
+            setEditingId(null);
             fetchCategories();
         } catch (err: unknown) {
             const msg = err instanceof Error ? err.message : '알 수 없는 오류';
@@ -87,6 +101,18 @@ export default function IconGridManager() {
         } finally {
             setLoading(false);
         }
+    };
+
+    const handleEdit = (item: CategoryItem) => {
+        setEditingId(item.id);
+        setForm({
+            order_no: item.order_no,
+            icon: item.icon ?? '',
+            text: item.text,
+            link: item.link,
+            image: item.image ?? '',
+        });
+        setPreview(item.image ?? null);
     };
 
     const handleDelete = async (id: number) => {
@@ -173,33 +199,42 @@ export default function IconGridManager() {
                     disabled={loading}
                     className="w-full bg-indigo-600 text-white font-semibold py-3 rounded-lg hover:bg-indigo-700 transition-colors disabled:opacity-50"
                 >
-                    {loading ? '등록 중...' : '카테고리 추가'}
+                    {loading
+                        ? editingId
+                            ? '수정 중...'
+                            : '등록 중...'
+                        : editingId
+                        ? '카테고리 수정'
+                        : '카테고리 추가'}
                 </button>
             </form>
 
             {/* 미리보기 */}
             <div className="flex flex-wrap gap-4 mb-6">
-                {items
-                    .sort((a, b) => a.order_no - b.order_no)
-                    .map((item) => (
-                        <div key={item.id} className="flex flex-col items-center w-20">
-                            {item.image ? (
-                                <img src={item.image} alt={item.text} className="w-16 h-16 rounded-md" />
-                            ) : (
-                                <span className="text-3xl">{item.icon}</span>
-                            )}
-                            <span className="text-sm mt-1">{item.text}</span>
+                {items.map((item) => (
+                    <div key={item.id} className="flex flex-col items-center w-20">
+                        {item.image ? (
+                            <img src={item.image} alt={item.text} className="w-16 h-16 rounded-md" />
+                        ) : (
+                            <span className="text-3xl">{item.icon}</span>
+                        )}
+                        <span className="text-sm mt-1">{item.text}</span>
+                        <div className="flex flex-col gap-1 mt-1">
+                            <button onClick={() => handleEdit(item)} className="text-xs text-blue-500 hover:underline">
+                                수정
+                            </button>
                             <button
                                 onClick={() => handleDelete(item.id)}
-                                className="text-xs text-red-500 mt-1 hover:underline"
+                                className="text-xs text-red-500 hover:underline"
                             >
                                 삭제
                             </button>
                         </div>
-                    ))}
+                    </div>
+                ))}
             </div>
 
-            {/* 프론트에서 10번째 더보기는 하드코딩 */}
+            {/* 10번째 더보기 */}
             <div className="flex flex-wrap gap-4">
                 <div className="flex flex-col items-center w-20">
                     <img src="/arrow-down-circle.png" alt="더보기" className="w-16 h-16 rounded-md" />
