@@ -36,6 +36,7 @@ export default function HomePage() {
     const [recommendedPrograms, setRecommendedPrograms] = useState<Program[]>(
         []
     );
+    const [shortPrograms, setShortPrograms] = useState<Program[]>([]);
     const [categories, setCategories] = useState<CategoryItem[]>([]);
     const [banners, setBanners] = useState<BannerItem[]>([]);
     const [bannerIndex, setBannerIndex] = useState(0);
@@ -54,6 +55,21 @@ export default function HomePage() {
         } catch (err) {
             console.error("[Supabase Fetch Error]", err);
             setRecommendedPrograms([]);
+        }
+    };
+
+    const fetchShortPrograms = async () => {
+        try {
+            const { data, error } = await supabase
+                .from("programs")
+                .select()
+                .eq("duration_type", "단기")
+                .order("created_at", { ascending: false });
+            if (error) throw error;
+            if (data) setShortPrograms(data as Program[]);
+        } catch (err) {
+            console.error("[Supabase Fetch Error]", err);
+            setShortPrograms([]);
         }
     };
 
@@ -87,6 +103,7 @@ export default function HomePage() {
 
     useEffect(() => {
         fetchPrograms();
+        fetchShortPrograms();
         fetchCategories();
         fetchBanners();
     }, []);
@@ -147,7 +164,7 @@ export default function HomePage() {
                             {banners.map((banner) => (
                                 <Link
                                     key={banner.id}
-                                    href={banner.link}
+                                    href={`moim/${banner.link}`}
                                     className="w-full flex-shrink-0"
                                 >
                                     <img
@@ -321,7 +338,7 @@ export default function HomePage() {
                 </div>
             </section>
 
-            {/* 최신 프로그램 그리드 */}
+            {/* 단기 프로그램 그리드 */}
             <section className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
                 <div className="mb-10">
                     <div className="flex justify-between items-center mb-6">
@@ -336,7 +353,7 @@ export default function HomePage() {
                         </Link>
                     </div>
                     <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
-                        {recommendedPrograms.slice(0, 6).map((prog) => (
+                        {shortPrograms.slice(0, 6).map((prog) => (
                             <Link
                                 href={`/moim/${prog.id}`}
                                 key={prog.id}
