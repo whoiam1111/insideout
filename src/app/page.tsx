@@ -5,6 +5,7 @@ import Link from "next/link";
 import { useRef, useEffect, useState } from "react";
 import { supabase } from "@/app/lib/supabase";
 import { ArrowDownCircleIcon } from "@heroicons/react/24/outline";
+import MainSlider from "./components/MainSlider";
 
 interface Program {
     id: number;
@@ -52,6 +53,7 @@ export default function HomePage() {
                 .order("created_at", { ascending: false });
             if (error) throw error;
             if (data) setRecommendedPrograms(data as Program[]);
+            console.log(data);
         } catch (err) {
             console.error("[Supabase Fetch Error]", err);
             setRecommendedPrograms([]);
@@ -95,6 +97,7 @@ export default function HomePage() {
                 .order("order_no", { ascending: true });
             if (error) throw error;
             if (data) setBanners(data as BannerItem[]);
+            // console.log("banner data", data);
         } catch (err) {
             console.error("[Supabase Banners Fetch Error]", err);
             setBanners([]);
@@ -141,97 +144,9 @@ export default function HomePage() {
     return (
         <div className="min-h-screen bg-white text-gray-900">
             {/* 배너 캐러셀 (한 장씩 + 자동 슬라이드) */}
-            <section className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-6 relative">
-                <div className="w-full relative">
-                    <button
-                        onClick={() =>
-                            setBannerIndex((prev) =>
-                                prev > 0 ? prev - 1 : banners.length - 1
-                            )
-                        }
-                        className="absolute left-0 top-1/2 -translate-y-1/2 z-10 bg-white rounded-full p-2 shadow hover:bg-gray-100"
-                    >
-                        ◀
-                    </button>
-
-                    <div className="overflow-hidden rounded-2xl">
-                        <div
-                            className="flex transition-transform duration-500"
-                            style={{
-                                transform: `translateX(-${bannerIndex * 100}%)`,
-                            }}
-                        >
-                            {banners.map((banner) => (
-                                <Link
-                                    key={banner.id}
-                                    href={`moim/${banner.link}`}
-                                    className="w-full flex-shrink-0"
-                                >
-                                    <img
-                                        src={banner.image}
-                                        alt={banner.title}
-                                        className="w-full object-cover sm:h-90 rounded-2xl"
-                                    />
-                                </Link>
-                            ))}
-                        </div>
-                    </div>
-
-                    <button
-                        onClick={() =>
-                            setBannerIndex((prev) =>
-                                prev < banners.length - 1 ? prev + 1 : 0
-                            )
-                        }
-                        className="absolute right-0 top-1/2 -translate-y-1/2 z-10 bg-white rounded-full p-2 shadow hover:bg-gray-100"
-                    >
-                        ▶
-                    </button>
-                </div>
+            <section className="max-w-6xl mx-auto md:px-4 sm:px-6 lg:px-8 py-6 relative">
+                <MainSlider banners={banners} />
             </section>
-
-            {/* Hero Section */}
-            {/* <section className="bg-gradient-to-br from-indigo-50 to-white py-20">
-                <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col lg:flex-row items-start gap-12">
-                    <motion.div
-                        initial={{ x: -40, opacity: 0 }}
-                        animate={{ x: 0, opacity: 1 }}
-                        transition={{ duration: 0.6 }}
-                        className="flex-1"
-                    >
-                        <h1 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold leading-tight">
-                            # {programInfo.name} 프로그램
-                        </h1>
-                        <p className="mt-4 text-gray-700 max-w-xl">
-                            <strong>대상:</strong> {programInfo.target} <br />
-                            <strong>기간:</strong> {programInfo.duration} <br />
-                        </p>
-                        <div className="mt-6 flex flex-wrap gap-3">
-                            <Link
-                                href="/moim/mindpoint"
-                                className="inline-flex items-center gap-2 px-5 py-3 rounded-lg border border-gray-300"
-                            >
-                                상세보기
-                            </Link>
-                        </div>
-                    </motion.div>
-
-                    <motion.div
-                        initial={{ scale: 0.95, opacity: 0 }}
-                        animate={{ scale: 1, opacity: 1 }}
-                        transition={{ duration: 0.6 }}
-                        className="flex-1 w-full max-w-md"
-                    >
-                        <div className="rounded-2xl overflow-hidden shadow-xl bg-white">
-                            <img
-                                src="/widthmind.jpg"
-                                alt="마인드 포인트"
-                                className="w-full h-64 object-cover"
-                            />
-                        </div>
-                    </motion.div>
-                </div>
-            </section> */}
 
             {/* Icon Grid Section (Supabase 카테고리) */}
             <section className="bg-white py-8 mb-10">

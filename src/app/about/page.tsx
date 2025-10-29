@@ -56,7 +56,7 @@ function IntroSection() {
             {/* 플랫폼 소개 */}
             <section className="space-y-16">
                 <IntroCard
-                    image="/logo.png"
+                    image="/logo_purple.png"
                     title="왜 인사이드아웃인가요?"
                     description="우리는 관심사와 자기성장을 중심으로 다양한 모임과 강연을 제공하며, 새로운 사람들과 의미 있는 경험을 만들어갑니다."
                 />
