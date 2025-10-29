@@ -97,7 +97,7 @@ export default function HomePage() {
                 .order("order_no", { ascending: true });
             if (error) throw error;
             if (data) setBanners(data as BannerItem[]);
-            console.log("banner data", data);
+            // console.log("banner data", data);
         } catch (err) {
             console.error("[Supabase Banners Fetch Error]", err);
             setBanners([]);
@@ -144,7 +144,7 @@ export default function HomePage() {
     return (
         <div className="min-h-screen bg-white text-gray-900">
             {/* 배너 캐러셀 (한 장씩 + 자동 슬라이드) */}
-            <section className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-6 relative">
+            <section className="max-w-6xl mx-auto md:px-4 sm:px-6 lg:px-8 py-6 relative">
                 <MainSlider banners={banners} />
             </section>
 
