@@ -21,7 +21,7 @@ export default function Header() {
                     <Link href="/" className="flex items-center gap-4">
                         <div className="w-16 h-16 flex items-center justify-center rounded-2xl bg-white shadow">
                             <img
-                                src="/logo.png"
+                                src="/logo_purple.png"
                                 alt="InsideOut 로고"
                                 className="w-14 h-14 object-contain"
                             />
