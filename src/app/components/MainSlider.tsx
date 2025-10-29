@@ -30,7 +30,7 @@ interface MainsliderProps {
 export default function MainSlider({ banners }: MainsliderProps) {
     const [currentIndex, setCurrentIndex] = useState(1);
     const router = useRouter();
-    // console.log("banner", banners);
+    console.log("banner", banners);
 
     return (
         <div className="relative group">
@@ -50,9 +50,9 @@ export default function MainSlider({ banners }: MainsliderProps) {
                         .map((item, index) => (
                             <SwiperSlide key={item.id}>
                                 <div
-                                    className="relative bg-gray-200 aspect-[7/4] md:aspect-[6/2] rounded-lg cursor-pointer"
+                                    className="relative bg-gray-200 aspect-[6/2] rounded-lg cursor-pointer"
                                     onClick={() =>
-                                        router.push(`/contents/${item.id}`)
+                                        router.push(`/moim/${item.title}`)
                                     }
                                 >
                                     <Image
