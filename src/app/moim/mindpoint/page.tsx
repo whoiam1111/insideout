@@ -59,11 +59,11 @@ export default function MindPointPage() {
         },
         {
             question: "온라인으로 진행되나요?",
-            answer: "모든 과정은 오프라인, 대면으로 진행 되빈다.",
+            answer: "모든 과정은 오프라인, 대면으로 진행 됩니다.",
         },
 
         {
-            question: "그룹 코칭은 어떤 방식으로 진행되나요?",
+            question: "프로그램은 어떤 방식으로 진행되나요?",
             answer: "소규모 그룹으로 진행되며, 각 회차별 주제에 맞춰 개인적인 성찰과 그룹 내 공유를 통해 함께 성장하는 방식입니다.",
         },
     ];
@@ -152,7 +152,7 @@ export default function MindPointPage() {
                     <div className="text-center mb-10">
                         <div>
                             마인드 포인트는 대한민국 청년들을 위해 설계된 통합
-                            상담·코칭 프로그램입니다.
+                            PT 프로그램입니다.
                         </div>
                         <div>
                             빠르게 변하는 세상 속에서 불안과 혼란을 겪는
@@ -305,8 +305,8 @@ export default function MindPointPage() {
                     </h2>
                     <div className="text-center text-lg mb-10">
                         <div>
-                            단순한 상담이 아닌, 당신의 삶을 의미있게 만들어 갈
-                            나만의 이야기를 만들어요.
+                            단순한 프로그램이 아닌, 당신의 삶을 의미있게 만들어
+                            갈 나만의 이야기를 만들어요.
                         </div>
                         <div>
                             불안과 혼란을 넘어, 가치와 의미를 좌표로 삼는 새로운

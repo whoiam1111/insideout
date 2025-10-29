@@ -47,7 +47,7 @@ export default function MoimPage() {
                     .order("created_at", { ascending: false });
 
                 if (error) throw error;
-
+                // console.log("moim", data);
                 const mapped: Moim[] = (data ?? []).map((d: MoimResponse) => ({
                     id: d.id.toString(),
                     title: d.title ?? "",
@@ -58,20 +58,20 @@ export default function MoimPage() {
                     price: d.price ?? null,
                 }));
 
-                // 자체강연: 마인드 포인트 추가
-                const mindPoint: Moim = {
-                    id: "mp",
-                    title: "마인드 포인트",
-                    subtitle: "그룹 코칭 기반 자기 성장 프로그램",
-                    imageUrl: "/widthposter.jpg",
-                    category: "자체강연",
-                    tags: ["자체강연", "성장"],
-                    price: 0,
-                };
+                // // 자체강연: 마인드 포인트 추가
+                // const mindPoint: Moim = {
+                //     id: "mp",
+                //     title: "마인드 포인트",
+                //     subtitle: "그룹 코칭 기반 자기 성장 프로그램",
+                //     imageUrl: "/widthposter.jpg",
+                //     category: "자체강연",
+                //     tags: ["자체강연", "성장"],
+                //     price: 0,
+                // };
 
-                if (!mapped.some((m) => m.title === "마인드 포인트")) {
-                    mapped.unshift(mindPoint);
-                }
+                // if (!mapped.some((m) => m.title === "마인드 포인트")) {
+                //     mapped.unshift(mindPoint);
+                // }
 
                 setMoims(mapped);
                 setFiltered(mapped);
