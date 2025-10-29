@@ -1,167 +1,154 @@
 'use client';
 
 import { useEffect, useState } from 'react';
+import MoimList from './components/MoimList';
 import { supabase } from '@/app/lib/supabase';
-import { useRouter } from 'next/navigation';
 
-interface MoimDetail {
+interface Moim {
     id: string;
     title: string;
-    description: string;
-    category?: string;
-    city?: string;
-    district?: string;
-    capacity?: number;
-    duration_type?: string;
-    time?: string;
-    date?: string;
-    start_date?: string;
-    end_date?: string;
-    imageUrl?: string;
-    price?: number;
-    address?: string;
+    subtitle?: string | null;
+    imageUrl: string;
+    category?: string | null; // 하위 카테고리
+    parent_category?: string | null; // 상위 카테고리
+    tags?: string[] | null;
+    price?: number | null;
 }
 
-interface MoimDetailPageProps {
-    params: { tab: string; id: string };
+interface MoimResponse {
+    id: string | number;
+    title?: string;
+    subtitle?: string | null;
+    thumbnail?: string | null;
+    category?: string | null;
+    parent_category?: string | null;
+    tags?: string[] | null;
+    price?: number | null;
 }
 
-export default function MoimDetailPage({ params }: MoimDetailPageProps) {
-    const { tab, id } = params;
-    const [moim, setMoim] = useState<MoimDetail | null>(null);
+// 상위 카테고리 고정
+const categories = ['전체', '클래스', '모임', '강연', '챌린지'];
+
+export default function MoimPage() {
+    const [moims, setMoims] = useState<Moim[]>([]);
+    const [filtered, setFiltered] = useState<Moim[]>([]);
     const [loading, setLoading] = useState(true);
-    const router = useRouter();
-
-    // 카테고리 탭
-    const tabs = ['moim', '자체강연', '강연', '팝업', '챌린지'];
+    const [selectedParent, setSelectedParent] = useState<string>('전체');
+    const [selectedSub, setSelectedSub] = useState<string | null>(null);
 
     useEffect(() => {
-        const fetchMoimDetail = async (id: string) => {
-            setLoading(true);
-            if (!id) return;
-
-            const numericId = parseInt(id, 10);
-            if (isNaN(numericId)) {
-                console.warn('id가 숫자가 아닙니다:', id);
-                setMoim(null);
-                setLoading(false);
-                return;
-            }
-
+        const fetchMoims = async () => {
             try {
                 const { data, error } = await supabase
                     .from('programs')
                     .select('*')
-                    .eq('id', numericId)
-                    .eq('category', tab)
-                    .single();
-                console.log(data, '?dta');
+                    .order('created_at', { ascending: false });
+
                 if (error) throw error;
 
-                setMoim({
-                    id: data.id.toString(),
-                    title: data.title ?? '제목 없음',
-                    description: data.description ?? '상세 설명이 없습니다.',
-                    category: data.category ?? '문화',
-                    city: data.city ?? '서울',
-                    district: data.district ?? '용산구',
-                    capacity: data.capacity ?? 10,
-                    duration_type: data.duration_type ?? '1회성',
-                    time: data.time ?? '13:00 - 18:00',
-                    date: data.date ? data.date.toString() : '',
-                    start_date: data.start_date ? data.start_date.toString() : '',
-                    end_date: data.end_date ? data.end_date.toString() : '',
-                    imageUrl: data.thumbnail ?? '',
-                    price: data.price ?? 0,
-                    address: data.address ?? '',
-                });
+                const mapped: Moim[] = (data ?? []).map((d: MoimResponse) => ({
+                    id: d.id.toString(),
+                    title: d.title ?? '',
+                    subtitle: d.subtitle ?? d.title ?? '',
+                    imageUrl: d.thumbnail ?? '/default.jpg',
+                    category: d.category ?? '모임', // 하위 카테고리
+                    parent_category: d.parent_category ?? '모임', // 상위 카테고리
+                    tags: d.tags ?? [],
+                    price: d.price ?? null,
+                }));
+
+                setMoims(mapped);
+                setFiltered(mapped);
             } catch (err) {
                 console.error('[Supabase Fetch Error]', err);
-                setMoim(null);
+                setMoims([]);
+                setFiltered([]);
             } finally {
                 setLoading(false);
             }
         };
 
-        fetchMoimDetail(id);
-    }, [tab, id]);
+        fetchMoims();
+    }, []);
 
-    if (loading) return <p className="text-center text-gray-500 py-10 animate-pulse">불러오는 중...</p>;
-    if (!moim) return <p className="text-center text-gray-500 py-10">모임 정보를 불러올 수 없습니다.</p>;
+    // 선택된 상위 카테고리에 따른 하위 카테고리 추출
+    const subCategories =
+        selectedParent && selectedParent !== '전체'
+            ? Array.from(
+                  new Set(
+                      moims
+                          .filter((m) => (m.category ?? '') === selectedParent)
+                          .map((m) => m.parent_category ?? '')
+                          .filter(Boolean)
+                  )
+              )
+            : [];
+
+    // 상위 카테고리 선택 시 필터링
+    const handleParentCategory = (category: string) => {
+        setSelectedParent(category);
+        setSelectedSub(null);
+
+        if (category === '전체') {
+            setFiltered(moims);
+        } else {
+            setFiltered(moims.filter((m) => (m.category ?? '') === category));
+        }
+    };
+
+    // 하위 카테고리 선택 시 필터링
+    const handleSubCategory = (sub: string | null) => {
+        if (!sub) return;
+        setSelectedSub(sub);
+        setFiltered(moims.filter((m) => (m.parent_category ?? '') === sub));
+    };
 
     return (
-        <div className="pt-16 pb-20 bg-white min-h-screen">
-            <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
-                {/* 탭 네비게이션 */}
-                <div className="flex border-b border-gray-200 mb-6">
-                    {tabs.map((t) => (
+        <section className="py-6 max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+            {/* 상위 카테고리 스크롤 탭 */}
+            <div className="overflow-x-auto scrollbar-hide mb-2">
+                <div className="flex gap-6 whitespace-nowrap">
+                    {categories.map((cat) => (
                         <button
-                            key={t}
-                            className={`px-4 py-2 -mb-px font-medium border-b-2 ${
-                                t === tab ? 'border-indigo-600 text-indigo-600' : 'border-transparent text-gray-500'
+                            key={cat}
+                            onClick={() => handleParentCategory(cat)}
+                            className={`relative pb-2 font-medium text-sm transition-colors ${
+                                selectedParent === cat ? 'text-red-500' : 'text-gray-600 hover:text-gray-800'
                             }`}
-                            onClick={() => router.push(`/inside/${t}/${id}`)}
                         >
-                            {t}
+                            {cat}
+                            {selectedParent === cat && (
+                                <span className="absolute bottom-0 left-0 w-full h-0.5 bg-red-500 rounded"></span>
+                            )}
                         </button>
                     ))}
                 </div>
-
-                {/* 모임 정보 */}
-                <h1 className="text-2xl font-bold mb-2">{moim.title}</h1>
-                <p className="text-gray-500 mb-4">{moim.category}</p>
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-3 text-gray-700">
-                    {moim.city && (
-                        <p>
-                            <strong>지역:</strong> {moim.city} {moim.district}
-                        </p>
-                    )}
-                    {moim.capacity !== undefined && (
-                        <p>
-                            <strong>정원:</strong> {moim.capacity}명
-                        </p>
-                    )}
-                    {moim.duration_type && (
-                        <p>
-                            <strong>기간 유형:</strong> {moim.duration_type}
-                        </p>
-                    )}
-                    {moim.time && (
-                        <p>
-                            <strong>시간:</strong> {moim.time}
-                        </p>
-                    )}
-                    {moim.date && (
-                        <p>
-                            <strong>일정:</strong> {moim.date}
-                        </p>
-                    )}
-                    {moim.start_date && moim.end_date && (
-                        <p>
-                            <strong>기간:</strong> {moim.start_date} ~ {moim.end_date}
-                        </p>
-                    )}
-                    {moim.address && (
-                        <p>
-                            <strong>주소:</strong> {moim.address}
-                        </p>
-                    )}
-                </div>
-
-                {moim.imageUrl && (
-                    <div className="w-full rounded-2xl shadow-md overflow-hidden mt-6">
-                        <img
-                            src={moim.imageUrl}
-                            alt={moim.title}
-                            className="w-full h-auto object-cover"
-                        />
-                    </div>
-                )}
-
-                <div className="bg-gray-50 rounded-xl p-5 sm:p-6 mt-6 shadow-sm">
-                    <p className="text-gray-700 whitespace-pre-line">{moim.description}</p>
-                </div>
             </div>
-        </div>
+
+            {/* 하위 카테고리 탭 */}
+            {subCategories.length > 0 && (
+                <div className="flex gap-4 overflow-x-auto scrollbar-hide mb-4">
+                    {subCategories.map((sub) => (
+                        <button
+                            key={sub}
+                            onClick={() => handleSubCategory(sub)}
+                            className={`px-3 py-1 rounded-full text-sm font-medium transition-colors ${
+                                selectedSub === sub
+                                    ? 'bg-gray-200 text-gray-800'
+                                    : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
+                            }`}
+                        >
+                            {sub}
+                        </button>
+                    ))}
+                </div>
+            )}
+
+            {/* 로딩 */}
+            {loading && <p className="text-center text-gray-500 text-lg py-20 animate-pulse">불러오는 중...</p>}
+
+            {/* 모임 리스트 */}
+            {!loading && <MoimList moims={filtered} />}
+        </section>
     );
 }

@@ -1,11 +1,11 @@
-"use client";
+'use client';
 
-import { motion } from "framer-motion";
-import Link from "next/link";
-import { useRef, useEffect, useState } from "react";
-import { supabase } from "@/app/lib/supabase";
-import { ArrowDownCircleIcon } from "@heroicons/react/24/outline";
-import MainSlider from "./components/MainSlider";
+import { motion } from 'framer-motion';
+import Link from 'next/link';
+import { useRef, useEffect, useState } from 'react';
+import { supabase } from '@/app/lib/supabase';
+import { ArrowDownCircleIcon } from '@heroicons/react/24/outline';
+import MainSlider from './components/MainSlider';
 
 interface Program {
     id: number;
@@ -34,9 +34,7 @@ interface BannerItem {
 }
 
 export default function HomePage() {
-    const [recommendedPrograms, setRecommendedPrograms] = useState<Program[]>(
-        []
-    );
+    const [recommendedPrograms, setRecommendedPrograms] = useState<Program[]>([]);
     const [shortPrograms, setShortPrograms] = useState<Program[]>([]);
     const [categories, setCategories] = useState<CategoryItem[]>([]);
     const [banners, setBanners] = useState<BannerItem[]>([]);
@@ -48,14 +46,14 @@ export default function HomePage() {
     const fetchPrograms = async () => {
         try {
             const { data, error } = await supabase
-                .from("programs")
-                .select("*")
-                .order("created_at", { ascending: false });
+                .from('programs')
+                .select('*')
+                .order('created_at', { ascending: false });
             if (error) throw error;
             if (data) setRecommendedPrograms(data as Program[]);
             console.log(data);
         } catch (err) {
-            console.error("[Supabase Fetch Error]", err);
+            console.error('[Supabase Fetch Error]', err);
             setRecommendedPrograms([]);
         }
     };
@@ -63,14 +61,14 @@ export default function HomePage() {
     const fetchShortPrograms = async () => {
         try {
             const { data, error } = await supabase
-                .from("programs")
+                .from('programs')
                 .select()
-                .eq("duration_type", "단기")
-                .order("created_at", { ascending: false });
+                .eq('duration_type', '단기')
+                .order('created_at', { ascending: false });
             if (error) throw error;
             if (data) setShortPrograms(data as Program[]);
         } catch (err) {
-            console.error("[Supabase Fetch Error]", err);
+            console.error('[Supabase Fetch Error]', err);
             setShortPrograms([]);
         }
     };
@@ -78,28 +76,25 @@ export default function HomePage() {
     const fetchCategories = async () => {
         try {
             const { data, error } = await supabase
-                .from("categories")
-                .select("*")
-                .order("order_no", { ascending: true });
+                .from('categories')
+                .select('*')
+                .order('order_no', { ascending: true });
             if (error) throw error;
             if (data) setCategories(data as CategoryItem[]);
         } catch (err) {
-            console.error("[Supabase Categories Fetch Error]", err);
+            console.error('[Supabase Categories Fetch Error]', err);
             setCategories([]);
         }
     };
 
     const fetchBanners = async () => {
         try {
-            const { data, error } = await supabase
-                .from("banners")
-                .select("*")
-                .order("order_no", { ascending: true });
+            const { data, error } = await supabase.from('banners').select('*').order('order_no', { ascending: true });
             if (error) throw error;
             if (data) setBanners(data as BannerItem[]);
             // console.log("banner data", data);
         } catch (err) {
-            console.error("[Supabase Banners Fetch Error]", err);
+            console.error('[Supabase Banners Fetch Error]', err);
             setBanners([]);
         }
     };
@@ -115,30 +110,28 @@ export default function HomePage() {
     useEffect(() => {
         if (banners.length === 0) return;
         const interval = setInterval(() => {
-            setBannerIndex((prev) =>
-                prev < banners.length - 1 ? prev + 1 : 0
-            );
+            setBannerIndex((prev) => (prev < banners.length - 1 ? prev + 1 : 0));
         }, 3000);
         return () => clearInterval(interval);
     }, [banners]);
 
     const scrollLeft = () => {
         if (carouselRef.current) {
-            carouselRef.current.scrollBy({ left: -300, behavior: "smooth" });
+            carouselRef.current.scrollBy({ left: -300, behavior: 'smooth' });
         }
     };
 
     const scrollRight = () => {
         if (carouselRef.current) {
-            carouselRef.current.scrollBy({ left: 300, behavior: "smooth" });
+            carouselRef.current.scrollBy({ left: 300, behavior: 'smooth' });
         }
     };
 
     const programInfo = {
-        name: "마인드 포인트",
-        target: "20대~30대 초반 청년층",
-        duration: "3주 (주 2회, 총 6회)",
-        notionDetail: "",
+        name: '마인드 포인트',
+        target: '20대~30대 초반 청년층',
+        duration: '3주 (주 2회, 총 6회)',
+        notionDetail: '',
     };
 
     return (
@@ -174,9 +167,7 @@ export default function HomePage() {
                                             className="w-10 h-10 object-contain"
                                         />
                                     ) : (
-                                        <span className="text-4xl">
-                                            {item.icon || "❓"}
-                                        </span>
+                                        <span className="text-4xl">{item.icon || '❓'}</span>
                                     )}
                                 </motion.div>
                                 <p className="text-sm font-medium text-gray-700 group-hover:text-indigo-600 transition-colors">
@@ -186,7 +177,7 @@ export default function HomePage() {
                         ))}
 
                         <Link
-                            href="/moim"
+                            href="/insideout"
                             className="flex flex-col items-center justify-center space-y-2 group"
                         >
                             <motion.div
@@ -212,9 +203,7 @@ export default function HomePage() {
             <section className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
                 <div className="">
                     <div className="flex justify-between items-center mb-6">
-                        <h2 className="text-2xl font-bold">
-                            🔥 요즘 핫한 프로그램
-                        </h2>
+                        <h2 className="text-2xl font-bold">🔥 요즘 핫한 프로그램</h2>
                         <Link
                             href="#"
                             className="text-gray-500 font-medium hover:underline"
@@ -225,7 +214,7 @@ export default function HomePage() {
                     <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
                         {recommendedPrograms.slice(0, 6).map((prog) => (
                             <Link
-                                href={`/moim/${prog.id}`}
+                                href={`/insideout/${prog.id}`}
                                 key={prog.id}
                                 className="bg-white rounded-2xl shadow-md overflow-hidden hover:shadow-lg transition flex flex-col"
                             >
@@ -237,15 +226,9 @@ export default function HomePage() {
                                     />
                                 )}
                                 <div className="p-4 flex-1 flex flex-col justify-between">
-                                    <h3 className="font-semibold text-lg mb-1 truncate">
-                                        {prog.title}
-                                    </h3>
-                                    <p className="text-gray-700 text-sm truncate">
-                                        {prog.subtitle}
-                                    </p>
-                                    <span className="text-rose-500 font-medium mt-2 block">
-                                        NEW
-                                    </span>
+                                    <h3 className="font-semibold text-lg mb-1 truncate">{prog.title}</h3>
+                                    <p className="text-gray-700 text-sm truncate">{prog.subtitle}</p>
+                                    <span className="text-rose-500 font-medium mt-2 block">NEW</span>
                                 </div>
                             </Link>
                         ))}
@@ -257,9 +240,7 @@ export default function HomePage() {
             <section className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
                 <div className="mb-10">
                     <div className="flex justify-between items-center mb-6">
-                        <h2 className="text-2xl font-bold">
-                            하루만 참여할 수 있는 프로그램
-                        </h2>
+                        <h2 className="text-2xl font-bold">하루만 참여할 수 있는 프로그램</h2>
                         <Link
                             href="#"
                             className="text-gray-500 font-medium hover:underline"
@@ -270,7 +251,7 @@ export default function HomePage() {
                     <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
                         {shortPrograms.slice(0, 6).map((prog) => (
                             <Link
-                                href={`/moim/${prog.id}`}
+                                href={`/insideout/${prog.id}`}
                                 key={prog.id}
                                 className="bg-white rounded-2xl shadow-md overflow-hidden hover:shadow-lg transition flex flex-col"
                             >
@@ -282,12 +263,8 @@ export default function HomePage() {
                                     />
                                 )}
                                 <div className="p-4 flex-1 flex flex-col justify-between">
-                                    <h3 className="font-semibold text-lg mb-1 truncate">
-                                        {prog.title}
-                                    </h3>
-                                    <p className="text-gray-700 text-sm truncate">
-                                        {prog.subtitle}
-                                    </p>
+                                    <h3 className="font-semibold text-lg mb-1 truncate">{prog.title}</h3>
+                                    <p className="text-gray-700 text-sm truncate">{prog.subtitle}</p>
                                     {/* <span className="text-rose-500 font-medium mt-2 block">
                                         NEW
                                     </span> */}

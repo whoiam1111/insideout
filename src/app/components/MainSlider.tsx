@@ -1,19 +1,19 @@
 // components/MainSlider.tsx
 
-"use client"; // 클라이언트 컴포넌트 선언
+'use client'; // 클라이언트 컴포넌트 선언
 
-import { Navigation, Pagination } from "swiper/modules";
-import { useState } from "react";
-import Image from "next/image";
-import { useRouter } from "next/navigation";
+import { Navigation, Pagination } from 'swiper/modules';
+import { useState } from 'react';
+import Image from 'next/image';
+import { useRouter } from 'next/navigation';
 // import { BannerItem } from "../../lib/types/project";
 // import { BOY } from "../../lib/constants/image_path";
-import { Swiper, SwiperSlide } from "swiper/react";
+import { Swiper, SwiperSlide } from 'swiper/react';
 
 // Swiper 필수 스타일시트
-import "swiper/css";
-import "swiper/css/navigation";
-import "swiper/css/pagination";
+import 'swiper/css';
+import 'swiper/css/navigation';
+import 'swiper/css/pagination';
 
 interface BannerItem {
     id: number;
@@ -30,7 +30,7 @@ interface MainsliderProps {
 export default function MainSlider({ banners }: MainsliderProps) {
     const [currentIndex, setCurrentIndex] = useState(1);
     const router = useRouter();
-    console.log("banner", banners);
+    console.log('banner', banners);
 
     return (
         <div className="relative group">
@@ -40,9 +40,7 @@ export default function MainSlider({ banners }: MainsliderProps) {
                 slidesPerView={1}
                 navigation={true}
                 loop={true}
-                onSlideChange={(swiper) =>
-                    setCurrentIndex(swiper.realIndex + 1)
-                }
+                onSlideChange={(swiper) => setCurrentIndex(swiper.realIndex + 1)}
             >
                 {banners.length > 0 ? (
                     banners
@@ -51,9 +49,7 @@ export default function MainSlider({ banners }: MainsliderProps) {
                             <SwiperSlide key={item.id}>
                                 <div
                                     className="relative bg-gray-200 aspect-[6/2] rounded-lg cursor-pointer"
-                                    onClick={() =>
-                                        router.push(`/moim/${item.title}`)
-                                    }
+                                    onClick={() => router.push(`/insideout/${item.title}`)}
                                 >
                                     <Image
                                         src={item.image}

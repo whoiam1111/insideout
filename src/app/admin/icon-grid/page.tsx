@@ -136,7 +136,10 @@ export default function IconGridManager() {
             )}
 
             {/* 폼 */}
-            <form onSubmit={handleSubmit} className="bg-white p-6 rounded-xl shadow-sm space-y-4 mb-10">
+            <form
+                onSubmit={handleSubmit}
+                className="bg-white p-6 rounded-xl shadow-sm space-y-4 mb-10"
+            >
                 <div className="grid grid-cols-2 gap-4">
                     <div>
                         <label className="block mb-1 font-medium">순서 (1~9)</label>
@@ -190,7 +193,11 @@ export default function IconGridManager() {
                         className="block w-full text-sm text-gray-500"
                     />
                     {preview && (
-                        <img src={preview} alt="미리보기" className="w-32 h-32 mt-3 object-cover rounded-lg border" />
+                        <img
+                            src={preview}
+                            alt="미리보기"
+                            className="w-32 h-32 mt-3 object-cover rounded-lg border"
+                        />
                     )}
                 </div>
 
@@ -212,15 +219,25 @@ export default function IconGridManager() {
             {/* 미리보기 */}
             <div className="flex flex-wrap gap-4 mb-6">
                 {items.map((item) => (
-                    <div key={item.id} className="flex flex-col items-center w-20">
+                    <div
+                        key={item.id}
+                        className="flex flex-col items-center w-20"
+                    >
                         {item.image ? (
-                            <img src={item.image} alt={item.text} className="w-16 h-16 rounded-md" />
+                            <img
+                                src={item.image}
+                                alt={item.text}
+                                className="w-16 h-16 rounded-md"
+                            />
                         ) : (
                             <span className="text-3xl">{item.icon}</span>
                         )}
                         <span className="text-sm mt-1">{item.text}</span>
                         <div className="flex flex-col gap-1 mt-1">
-                            <button onClick={() => handleEdit(item)} className="text-xs text-blue-500 hover:underline">
+                            <button
+                                onClick={() => handleEdit(item)}
+                                className="text-xs text-blue-500 hover:underline"
+                            >
                                 수정
                             </button>
                             <button
@@ -237,7 +254,11 @@ export default function IconGridManager() {
             {/* 10번째 더보기 */}
             <div className="flex flex-wrap gap-4">
                 <div className="flex flex-col items-center w-20">
-                    <img src="/arrow-down-circle.png" alt="더보기" className="w-16 h-16 rounded-md" />
+                    <img
+                        src="/arrow-down-circle.png"
+                        alt="더보기"
+                        className="w-16 h-16 rounded-md"
+                    />
                     <span className="text-sm mt-1">더보기</span>
                 </div>
             </div>
