@@ -2,7 +2,6 @@ import { supabase } from '@/app/lib/supabase';
 import { NextResponse } from 'next/server';
 
 export async function GET() {
-    // id 순서대로 가져오기
     const { data, error } = await supabase.from('categories').select('*').order('order_no', { ascending: true });
 
     if (error) return NextResponse.json({ error: error.message }, { status: 500 });
