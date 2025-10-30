@@ -13,20 +13,20 @@ export default function Footer() {
 						</h4>
 						<ul className="space-y-1 text-xs md:text-sm">
 							<li>
-								<a
-									href="#"
+								<Link
+									href="/temporary"
 									className="hover:text-indigo-600 transition"
 								>
 									공지사항
-								</a>
+								</Link>
 							</li>
 							<li>
-								<a
-									href="#"
+								<Link
+									href="/temporary"
 									className="hover:text-indigo-600 transition"
 								>
 									이벤트
-								</a>
+								</Link>
 							</li>
 							<li>
 								<Link
@@ -46,28 +46,28 @@ export default function Footer() {
 						</h4>
 						<ul className="space-y-1 text-xs md:text-sm">
 							<li>
-								<a
-									href="#"
+								<Link
+									href="/temporary"
 									className="hover:text-indigo-600 transition"
 								>
 									인스타그램
-								</a>
+								</Link>
 							</li>
 							<li>
-								<a
-									href="#"
+								<Link
+									href="/temporary"
 									className="hover:text-indigo-600 transition"
 								>
 									페이스북
-								</a>
+								</Link>
 							</li>
 							<li>
-								<a
-									href="#"
+								<Link
+									href="/temporary"
 									className="hover:text-indigo-600 transition"
 								>
 									블로그
-								</a>
+								</Link>
 							</li>
 						</ul>
 					</div>
@@ -76,18 +76,18 @@ export default function Footer() {
 				{/* 하단 약관 */}
 				<div className="border-t border-gray-300 pt-3 flex flex-col sm:flex-row justify-between items-center gap-2 text-sm text-gray-500">
 					<div className="flex flex-wrap gap-3 justify-center sm:justify-start">
-						<a
-							href="#"
+						<Link
+							href="/terms"
 							className="hover:text-indigo-600 transition"
 						>
 							이용약관
-						</a>
-						<a
-							href="#"
+						</Link>
+						<Link
+							href="/privacy"
 							className="hover:text-indigo-600 transition"
 						>
 							개인정보처리방침
-						</a>
+						</Link>
 					</div>
 					<div className="text-center sm:text-right mt-1 sm:mt-0">
 						© {new Date().getFullYear()} InsideOut
