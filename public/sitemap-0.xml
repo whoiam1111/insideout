@@ -1,15 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:news="http://www.google.com/schemas/sitemap-news/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml" xmlns:mobile="http://www.google.com/schemas/sitemap-mobile/1.0" xmlns:image="http://www.google.com/schemas/sitemap-image/1.1" xmlns:video="http://www.google.com/schemas/sitemap-video/1.1">
-<url><loc>https://insideout.io.kr/auth</loc><lastmod>2025-10-30T07:21:25.645Z</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
-<url><loc>https://insideout.io.kr/insideout/mindpoint</loc><lastmod>2025-10-30T07:21:25.646Z</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
-<url><loc>https://insideout.io.kr/contact</loc><lastmod>2025-10-30T07:21:25.646Z</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
-<url><loc>https://insideout.io.kr/about</loc><lastmod>2025-10-30T07:21:25.646Z</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
-<url><loc>https://insideout.io.kr/insideout</loc><lastmod>2025-10-30T07:21:25.646Z</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
-<url><loc>https://insideout.io.kr/signup</loc><lastmod>2025-10-30T07:21:25.646Z</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
-<url><loc>https://insideout.io.kr/admin/banners</loc><lastmod>2025-10-30T07:21:25.646Z</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
-<url><loc>https://insideout.io.kr/admin</loc><lastmod>2025-10-30T07:21:25.646Z</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
-<url><loc>https://insideout.io.kr/admin/icon-grid</loc><lastmod>2025-10-30T07:21:25.646Z</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
-<url><loc>https://insideout.io.kr/login</loc><lastmod>2025-10-30T07:21:25.646Z</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
-<url><loc>https://insideout.io.kr/admin/add-program</loc><lastmod>2025-10-30T07:21:25.646Z</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
-<url><loc>https://insideout.io.kr</loc><lastmod>2025-10-30T07:21:25.646Z</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
+<url><loc>https://insideout.io.kr/temporary</loc><lastmod>2025-10-30T08:05:02.741Z</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
+<url><loc>https://insideout.io.kr/contact</loc><lastmod>2025-10-30T08:05:02.741Z</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
+<url><loc>https://insideout.io.kr/insideout/mindpoint</loc><lastmod>2025-10-30T08:05:02.741Z</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
+<url><loc>https://insideout.io.kr/insideout</loc><lastmod>2025-10-30T08:05:02.741Z</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
+<url><loc>https://insideout.io.kr/about</loc><lastmod>2025-10-30T08:05:02.741Z</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
+<url><loc>https://insideout.io.kr/signup</loc><lastmod>2025-10-30T08:05:02.741Z</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
+<url><loc>https://insideout.io.kr/admin/add-program</loc><lastmod>2025-10-30T08:05:02.741Z</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
+<url><loc>https://insideout.io.kr/login</loc><lastmod>2025-10-30T08:05:02.741Z</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
+<url><loc>https://insideout.io.kr/admin/banners</loc><lastmod>2025-10-30T08:05:02.741Z</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
+<url><loc>https://insideout.io.kr</loc><lastmod>2025-10-30T08:05:02.741Z</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
+<url><loc>https://insideout.io.kr/admin</loc><lastmod>2025-10-30T08:05:02.741Z</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
+<url><loc>https://insideout.io.kr/admin/icon-grid</loc><lastmod>2025-10-30T08:05:02.741Z</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
+<url><loc>https://insideout.io.kr/terms</loc><lastmod>2025-10-30T08:05:02.741Z</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
+<url><loc>https://insideout.io.kr/privacy</loc><lastmod>2025-10-30T08:05:02.741Z</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
+<url><loc>https://insideout.io.kr/auth</loc><lastmod>2025-10-30T08:05:02.741Z</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
 </urlset>

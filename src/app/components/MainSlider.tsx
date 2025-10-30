@@ -30,7 +30,6 @@ interface MainsliderProps {
 export default function MainSlider({ banners }: MainsliderProps) {
 	const [currentIndex, setCurrentIndex] = useState(1);
 	const router = useRouter();
-	console.log("banner", banners);
 
 	return (
 		<div className="relative group">
