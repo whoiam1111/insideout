@@ -1,5 +1,6 @@
 "use client";
 
+import { StarIcon } from "@heroicons/react/24/solid";
 import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react"; // FAQ 아코디언 기능을 위해 useState 추가
@@ -257,6 +258,72 @@ export default function MindPointPage() {
 									</span>{" "}
 									{s.activity}
 								</p>
+							</div>
+						))}
+					</div>
+				</div>
+			</section>
+
+			{/* Review Section */}
+			<section className="py-16 bg-white">
+				<div className="max-w-4xl mx-auto px-6">
+					<h2 className="text-xl md:text-3xl font-bold text-gray-900 text-center mb-12">
+						참가자 후기
+					</h2>
+					<div
+						className="border-neutral-300 rounded-lg border-[1px] p-6 
+							flex flex-col gap-2 hover:bg-gray-100 mb-6"
+					>
+						<div className="font-bold text-lg text-center">
+							평균 만족도
+						</div>
+						<div className="flex flex-col gap-2">
+							<div className="flex items-center justify-center">
+								<StarIcon className="text-amber-500 size-7" />
+								<StarIcon className="text-amber-500 size-7" />
+								<StarIcon className="text-amber-500 size-7" />
+								<StarIcon className="text-amber-500 size-7" />
+								<StarIcon className="text-amber-500 size-7" />
+								<div className="relative w-6 h-6">
+									{/* Left half */}
+									<StarIcon
+										className="absolute left-0 top-0 w-6 h-6 text-amber-500"
+										style={{ clipPath: "inset(0 50% 0 0)" }} // left 50%
+									/>
+
+									{/* Right half */}
+									<StarIcon
+										className="absolute left-0 top-0 w-6 h-6 text-white"
+										style={{ clipPath: "inset(0 0 0 50%)" }} // right 50%
+									/>
+								</div>
+							</div>
+							<div className="text-center text-2xl font-bold">
+								4.5
+							</div>
+						</div>
+					</div>
+					<div className="grid grid-cols-2 gap-6">
+						{[...Array(4)].map((_, idx) => (
+							<div
+								key={idx}
+								className="border-neutral-300 rounded-lg border-[1px] p-6 
+							flex flex-col gap-2 hover:bg-gray-100"
+							>
+								<div className="font-semibold">이민형 님</div>
+								<div className="flex gap-2">
+									<div className="flex items-center">
+										<StarIcon className="text-amber-500 size-5" />
+										<StarIcon className="text-amber-500 size-5" />
+										<StarIcon className="text-amber-500 size-5" />
+										<StarIcon className="text-amber-500 size-5" />
+										<StarIcon className="text-amber-500 size-5" />
+									</div>
+									<div>5.0</div>
+								</div>
+								<div className="text-sm text-gray-800">
+									좋은 강의 감사합니다!
+								</div>
 							</div>
 						))}
 					</div>
