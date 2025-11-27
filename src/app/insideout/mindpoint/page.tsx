@@ -138,9 +138,7 @@ export default function MindPointPage() {
 	];
 
 	const [openFaq, setOpenFaq] = useState<number | null>(null);
-
-	const rating = convertRating(3.5);
-	// console.log("check rating", rating);
+	const applyLjnk = "https://www.latpeed.com/products/TknxB";
 
 	return (
 		<div className="min-h-screen font-sans text-gray-900">
@@ -202,7 +200,8 @@ export default function MindPointPage() {
 
 						<div className="flex flex-col sm:flex-row justify-center md:justify-start gap-4">
 							<Link
-								href={"https://www.latpeed.com/products/TknxB"}
+								href={applyLjnk}
+								target="_blank"
 								className="bg-indigo-500 px-20 py-3 border border-gray-300 text-white font-semibold rounded-full shadow-sm
                                 hover:bg-indigo-600 transform hover:-translate-y-1 transition-all duration-300 cursor-pointer"
 							>
@@ -432,7 +431,8 @@ export default function MindPointPage() {
 					</div>
 					<div className="flex justify-center">
 						<Link
-							href={"https://www.latpeed.com/products/I0aDI"}
+							href={applyLjnk}
+							target="_blank"
 							className="bg-indigo-500 px-20 py-3 border border-gray-300 text-white font-semibold rounded-full shadow-sm
                                 hover:bg-indigo-600 transform hover:-translate-y-1 transition-all duration-300 cursor-pointer"
 						>
