@@ -1,9 +1,12 @@
 "use client";
 
+import RatingStar from "@/app/components/common/RatingStar";
+import { convertRating } from "@/utils/RatingFunction";
 import { StarIcon } from "@heroicons/react/24/solid";
 import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react"; // FAQ 아코디언 기능을 위해 useState 추가
+import ReviewCarousel from "./ReviewBox";
 
 export default function MindPointPage() {
 	const sessions = [
@@ -85,7 +88,59 @@ export default function MindPointPage() {
 		"자기 성찰을 넘어 진정한 자기 실현을 꿈꾸는 분",
 	];
 
+	const reviewSummary = [
+		{
+			id: 1,
+			category: "평균 만족도",
+			rating: 4.5,
+		},
+		{
+			id: 2,
+			category: "운영 만족도",
+			rating: 4.6,
+		},
+		{
+			id: 3,
+			category: "지인 추천 의향",
+			rating: 4.4,
+		},
+	];
+
+	const reviewComment = [
+		{
+			id: 1,
+			name: "최*원",
+			rating: 4,
+			comment: "나에 대해서 심오한 고찰을 할 수 있었던 프로그램",
+			date: "2025-11-17",
+		},
+		{
+			id: 2,
+			name: "서*명",
+			rating: 5,
+			comment: "나를 알아가는 첫걸음",
+			date: "2025-11-17",
+		},
+		{
+			id: 3,
+			name: "권*국",
+			rating: 5,
+			comment: "느낌표적인 프로그램",
+			date: "2025-11-17",
+		},
+		{
+			id: 4,
+			name: "홍*기",
+			rating: 4,
+			comment: "몰랐던 나를 찾게해준 프로그램",
+			date: "2025-11-17",
+		},
+	];
+
 	const [openFaq, setOpenFaq] = useState<number | null>(null);
+
+	const rating = convertRating(3.5);
+	// console.log("check rating", rating);
 
 	return (
 		<div className="min-h-screen font-sans text-gray-900">
@@ -147,7 +202,7 @@ export default function MindPointPage() {
 
 						<div className="flex flex-col sm:flex-row justify-center md:justify-start gap-4">
 							<Link
-								href={"https://www.latpeed.com/products/I0aDI"}
+								href={"https://www.latpeed.com/products/TknxB"}
 								className="bg-indigo-500 px-20 py-3 border border-gray-300 text-white font-semibold rounded-full shadow-sm
                                 hover:bg-indigo-600 transform hover:-translate-y-1 transition-all duration-300 cursor-pointer"
 							>
@@ -266,67 +321,44 @@ export default function MindPointPage() {
 
 			{/* Review Section */}
 			<section className="py-16 bg-white">
-				<div className="max-w-4xl mx-auto px-6">
-					<h2 className="text-xl md:text-3xl font-bold text-gray-900 text-center mb-12">
-						참가자 후기
+				<div className="max-w-4xl mx-auto">
+					<h2 className="text-2xl md:text-3xl font-bold text-gray-900 text-center mb-6 sm:mb-10">
+						🌟 참가자 후기
 					</h2>
 					<div
-						className="border-neutral-300 rounded-lg border-[1px] p-6 
-							flex flex-col gap-2 hover:bg-gray-100 mb-6"
+						className="border-neutral-300 rounded-lg border-[1px] py-4 px-2 sm:p-6 
+							flex overflow-x-auto gap-2 justify-center shadow-sm mx-6"
 					>
-						<div className="font-bold text-lg text-center">
-							평균 만족도
-						</div>
-						<div className="flex flex-col gap-2">
-							<div className="flex items-center justify-center">
-								<StarIcon className="text-amber-500 size-7" />
-								<StarIcon className="text-amber-500 size-7" />
-								<StarIcon className="text-amber-500 size-7" />
-								<StarIcon className="text-amber-500 size-7" />
-								<StarIcon className="text-amber-500 size-7" />
-								<div className="relative w-6 h-6">
-									{/* Left half */}
-									<StarIcon
-										className="absolute left-0 top-0 w-6 h-6 text-amber-500"
-										style={{ clipPath: "inset(0 50% 0 0)" }} // left 50%
-									/>
-
-									{/* Right half */}
-									<StarIcon
-										className="absolute left-0 top-0 w-6 h-6 text-white"
-										style={{ clipPath: "inset(0 0 0 50%)" }} // right 50%
-									/>
-								</div>
-							</div>
-							<div className="text-center text-2xl font-bold">
-								4.5
-							</div>
-						</div>
-					</div>
-					<div className="grid grid-cols-2 gap-6">
-						{[...Array(4)].map((_, idx) => (
+						{reviewSummary.map((review) => (
 							<div
-								key={idx}
-								className="border-neutral-300 rounded-lg border-[1px] p-6 
-							flex flex-col gap-2 hover:bg-gray-100"
+								key={review.id}
+								className="sm:p-6 flex flex-col gap-2"
 							>
-								<div className="font-semibold">이민형 님</div>
-								<div className="flex gap-2">
-									<div className="flex items-center">
-										<StarIcon className="text-amber-500 size-5" />
-										<StarIcon className="text-amber-500 size-5" />
-										<StarIcon className="text-amber-500 size-5" />
-										<StarIcon className="text-amber-500 size-5" />
-										<StarIcon className="text-amber-500 size-5" />
-									</div>
-									<div>5.0</div>
+								<div className="font-bold text-base sm:text-lg text-center">
+									{review.category}
 								</div>
-								<div className="text-sm text-gray-800">
-									좋은 강의 감사합니다!
+								<div className="flex flex-col gap-2">
+									{/* <div className="flex items-center justify-center"> */}
+									<div className="flex justify-center">
+										{convertRating(review.rating).map(
+											(num, idx) => (
+												<RatingStar
+													key={idx}
+													rating={num}
+													size={5}
+												/>
+											)
+										)}
+									</div>
+									{/* </div> */}
+									<div className="text-center text-base sm:text-2xl font-medium sm:font-bold">
+										{review.rating}
+									</div>
 								</div>
 							</div>
 						))}
 					</div>
+					<ReviewCarousel reviews={reviewComment} />
 				</div>
 			</section>
 
